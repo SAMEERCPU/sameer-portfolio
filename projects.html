@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // Runs synchronously before first paint — two jobs:
+    // 1) if the radar loader already played this session, mark <html> so
+    //    the matching CSS rule hides #loader instantly on this page too.
+    // 2) apply the saved light/dark theme preference before paint so
+    //    there is never a flash of the wrong theme.
+    (function () {
+      try {
+        if (sessionStorage.getItem('sbLoaderShown')) {
+          document.documentElement.className += ' no-loader';
+        }
+      } catch (e) { /* sessionStorage unavailable — loader just replays */ }
+      try {
+        document.documentElement.setAttribute('data-theme', 'light');
+        var savedTheme = localStorage.getItem('sbTheme');
+        if (savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) { /* localStorage unavailable — stays on the light theme */ }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects | Sameer Baskota</title>
+  <meta name="description" content="Featured projects by Sameer Baskota: Crop Health Monitoring Through Aerial Mapping (91.6% classification accuracy), an AI-Based Research Paper Filtering System, and Aerombulance — a STOL aeroevacuation aircraft concept.">
+  <meta name="keywords" content="Sameer Baskota, Aerospace Engineering, UAV, Drone Mapping, Precision Agriculture, Computer Vision, Remote Sensing, Pulchowk Campus, Tribhuvan University, AgriTech, Machine Learning">
+  <meta name="author" content="Sameer Baskota">
+  <link rel="canonical" href="https://sameerbaskota.com.np/projects.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sameerbaskota.com.np/projects.html">
+  <meta property="og:site_name" content="Sameer Baskota">
+  <meta property="og:title" content="Projects — Sameer Baskota">
+  <meta property="og:description" content="Featured projects by Sameer Baskota: Crop Health Monitoring Through Aerial Mapping (91.6% classification accuracy), an AI-Based Research Paper Filtering System, and Aerombulance — a STOL aeroevacuation aircraft concept.">
+  <meta property="og:image" content="https://sameerbaskota.com.np/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Projects — Sameer Baskota">
+  <meta name="twitter:description" content="Featured projects by Sameer Baskota: Crop Health Monitoring Through Aerial Mapping (91.6% classification accuracy), an AI-Based Research Paper Filtering System, and Aerombulance — a STOL aeroevacuation aircraft concept.">
+  <meta name="twitter:image" content="https://sameerbaskota.com.np/images/og-image.png">
+
+  <meta name="theme-color" content="#F8F3E8">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="css/main.css">
+  <style>
+/* ==========================================================================
+   Project pop-up — photo gallery + report section layout
+   Load AFTER css/main.css. Uses only neutral colours and tokens that exist
+   in every version of the site, so it follows whichever theme is active.
+
+   What it fixes: the gallery grid and its cards now size to their content
+   (no fixed height / aspect-ratio), and the Report section is forced back
+   into normal page flow with a clear gap after the last photo.
+   ========================================================================== */
+
+.project-modal-body { height: auto; }
+
+/* ---- Gallery: cards grow with their image, the grid grows with the cards ---- */
+.project-modal-body .gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 20px;
+  align-items: stretch;
+  margin: 20px 0 0;
+  position: relative !important;
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+.project-modal-body .gallery-grid .thumb-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  gap: 10px;
+  padding: 12px;
+  aspect-ratio: auto;
+  min-height: 0;
+  position: relative !important;
+  height: auto !important;
+  overflow: hidden;
+}
+
+/* the dashed-box icon is only a stand-in until a photo is added */
+.project-modal-body .gallery-grid .thumb-placeholder:has(.thumb-image) > svg { display: none; }
+
+.project-modal-body .thumb-image {
+  display: block;
+  position: static !important;
+  width: 100%;
+  aspect-ratio: 4 / 3;        /* every photo gets the same frame */
+  height: auto !important;
+  max-height: none;
+  object-fit: contain;       /* whole image visible, nothing cropped */
+  background: #fff;
+  border-radius: var(--radius-sm);
+  cursor: zoom-in;
+}
+
+.project-modal-body .gallery-grid .thumb-placeholder span {
+  max-width: none;
+  text-align: center;
+}
+
+/* ---- Report: always BELOW the gallery, with a clear gap ---- */
+.project-modal-body .gallery-grid + .project-subhead { margin-top: 64px; }
+
+.project-modal-body .report-box {
+  position: relative !important;
+  inset: auto !important;
+  transform: none !important;
+  clear: both;
+  margin: 16px 0 8px;
+  padding: 20px 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px 24px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+}
+.project-modal-body .report-info {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex: 1 1 280px;
+  min-width: 0;
+}
+.project-modal-body .report-info strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 600;
+}
+.project-modal-body .report-note {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-muted);
+}
+.project-modal-body .report-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+}
+.project-modal-body .report-icon svg { width: 20px; height: 20px; }
+.project-modal-body .report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+/* Project video (YouTube): same 4:3 frame as the photos */
+.project-modal-body .video-embed {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: #000;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+.project-modal-body .video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+/* ---- Read More pop-ups: detailed write-ups ---- */
+.research-cards-grid { grid-template-columns: repeat(2, 1fr); }
+@media (max-width: 980px) { .research-cards-grid { grid-template-columns: 1fr; } }
+
+.project-modal-body .project-body-text + .project-body-text { margin-top: 12px; }
+.project-modal-body .plain-list {
+  margin: 10px 0 0;
+  padding-left: 20px;
+  list-style: disc;
+  display: grid;
+  gap: 7px;
+  color: var(--ink-muted);
+  line-height: 1.65;
+}
+.project-modal-body .plain-list strong { color: var(--ink); font-weight: 600; }
+.project-modal-body .step-list {
+  counter-reset: step;
+  list-style: none;
+  margin: 12px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.project-modal-body .step-list li {
+  counter-increment: step;
+  position: relative;
+  padding-left: 42px;
+  color: var(--ink-muted);
+  line-height: 1.65;
+}
+.project-modal-body .step-list li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0;
+  top: 1px;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-strong);
+  border-radius: 50%;
+  font: 500 12px var(--font-mono);
+  color: var(--ink);
+}
+.project-modal-body .step-list strong { color: var(--ink); font-weight: 600; }
+.project-modal-body .formula-list {
+  list-style: none;
+  margin: 12px 0;
+  padding: 14px 18px;
+  display: grid;
+  gap: 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink);
+  overflow-x: auto;
+}
+  .research-card-media > svg { display: none; }
+  </style>
+  
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <div id="loader" aria-hidden="true">
+    <div class="loader-radar">
+      <div class="loader-radar-sweep"></div>
+      <div class="loader-radar-dot"></div>
+    </div>
+    <p class="loader-text">Initializing systems<span class="dots"></span></p>
+    <div class="loader-bar"></div>
+  </div>
+  <div id="scroll-progress"></div>
+  <div id="spotlight"></div>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.3"/><line x1="9.4" y1="9.4" x2="4" y2="4"/><line x1="14.6" y1="9.4" x2="20" y2="4"/><line x1="9.4" y1="14.6" x2="4" y2="20"/><line x1="14.6" y1="14.6" x2="20" y2="20"/><circle cx="4" cy="4" r="2.1"/><circle cx="20" cy="4" r="2.1"/><circle cx="4" cy="20" r="2.1"/><circle cx="20" cy="20" r="2.1"/></svg>
+        <span>S<span class="brand-b">B</span></span>
+        <span class="brand-tag">/ AEROSPACE &middot; UAV</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <ul class="main-nav-list">
+          <li><a href="index.html" class="">Home</a></li>
+          <li><a href="about.html" class="">About</a></li>
+          <li><a href="projects.html" class="active">Projects</a></li>
+          <li><a href="skills.html" class="">Skills</a></li>
+          <li><a href="experience.html" class="">Experience</a></li>
+          
+          <li><a href="contact.html" class="">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="5.9" y2="5.9"/><line x1="18.1" y1="18.1" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.9" y2="18.1"/><line x1="18.1" y1="5.9" x2="19.8" y2="4.2"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html" class="">Home</a></li>
+          <li><a href="about.html" class="">About</a></li>
+          <li><a href="projects.html" class="active">Projects</a></li>
+          <li><a href="skills.html" class="">Skills</a></li>
+          <li><a href="experience.html" class="">Experience</a></li>
+          
+          <li><a href="contact.html" class="">Contact</a></li>
+      <li class="mobile-theme-row">
+        <button class="theme-toggle theme-toggle--mobile" type="button" aria-label="Switch to light theme" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="5.9" y2="5.9"/><line x1="18.1" y1="18.1" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.9" y2="18.1"/><line x1="18.1" y1="5.9" x2="19.8" y2="4.2"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+          <span class="theme-toggle-label">Switch to light mode</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <main id="main-content">
+    <header class="page-header hud-grid">
+      <div class="container">
+        <span class="eyebrow">Page // Projects</span>
+        <h1>Projects</h1>
+          <p> Take a look at my projects, from my final-year research to AI applications and aircraft design. 
+          Each one shares what I worked on, how I approached it, the tools I used, 
+          and what I learned along the way.</p>
+      </div>
+    </header>
+
+    <section class="section section--tight">
+      <div class="section-watermark" aria-hidden="true">
+        <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="0" y="0" width="0" height="30" rx="3"/><rect x="150" y="20" width="30" height="30" rx="3"/><rect x="20" y="150" width="30" height="30" rx="3"/><rect x="150" y="150" width="30" height="30" rx="3"/><rect x="85" y="85" width="30" height="30" rx="3"/><line x1="50" y1="35" x2="85" y2="85"/><line x1="150" y1="35" x2="115" y2="85"/><line x1="50" y1="165" x2="85" y2="115"/><line x1="150" y1="165" x2="115" y2="115"/></svg>
+      </div>
+      <div class="container">
+        
+        <p class="section-lede reveal">
+          
+        </p>
+
+        <div class="research-cards-grid">
+          <!-- ============================================================
+               CARD 1 — MAIN PROJECT (most detailed modal of the three)
+               ============================================================ -->
+          <article class="glass-panel corner-frame research-card research-card--main reveal">
+            <div class="research-card-media thumb-placeholder">
+              <span class="status-chip status-chip--done">Completed</span>
+              <!-- IMAGE PLACEHOLDER: project hero/thumbnail (e.g. drone in flight over the maize field) -->
+                 <img src="images/droneview.jpeg" alt="Field view from drone">
+            </div>
+            <div class="research-card-body">
+              <span class="eyebrow-pill eyebrow-pill--featured">Main Project &middot; Final Year Thesis</span>
+              <h3>UAV-Based Crop Health Monitoring Using RGB Based Imaging</h3>
+              <p class="research-card-desc">
+                A UAV-based system that uses RGB aerial images to identify potentially nutrient-deficient maize, 
+                achieving high classification accuracy without the need for costly multispectral sensors.
+              </p>
+              <div class="tag-row">
+                <span class="tag">DJI Phantom 4</span>
+                <span class="tag">Remote Sensing</span>
+                <span class="tag">Computer Vision</span>
+                <span class="tag">Random Forest</span>
+                <span class="tag">RGB Imaging</span>
+                <span class="tag">QGIS</span>
+              </div>
+              <button type="button" class="read-more-btn" data-modal-target="modal-crop-health">
+                Read More
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </article>
+
+          <!-- ============================================================
+               CARD 2 — MINOR PROJECT
+               ============================================================ -->
+          <article class="glass-panel corner-frame research-card reveal reveal-delay-1">
+            <div class="research-card-media thumb-placeholder">
+              <span class="status-chip status-chip--done">Completed</span>
+              <!-- IMAGE PLACEHOLDER: system architecture diagram or interface screenshot -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7l1.4-2.6a1 1 0 0 1 .9-.4h3.4a1 1 0 0 1 .9.4L16 7"/><circle cx="12" cy="14" r="3.5"/></svg>
+              <img src="images/Filter paper.jpg" alt="Research paper ranking system">
+            </div>
+            <div class="research-card-body">
+              <span class="eyebrow-pill" style="border:1px solid rgba(var(--cyan-rgb),0.3); background:rgba(var(--cyan-rgb),0.1); color:var(--cyan);">Samsung Innovation Campus Project</span>
+              <h3>Research Paper Ranking and Recommendation System</h3>
+              <p class="research-card-desc">
+                A web-based AI tool that helps researchers find relevant academic papers by 
+                filtering and ranking literature using OCR, computer vision, and transformer-based language models,
+                 making the research process more focused and efficient.
+              </p>
+              <div class="tag-row">
+                <span class="tag">SciBERT / SBERT</span>
+                <span class="tag">Tesseract OCR</span>
+                <span class="tag">Computer Vision</span>
+                <span class="tag">AI / Machine Learning</span>
+                <span class="tag">NPL</span>
+                
+              </div>
+              <button type="button" class="read-more-btn" data-modal-target="modal-research-paper">
+                Read More
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </article>
+
+          <!-- ============================================================
+               CARD 3 — DESIGN PROJECT
+               ============================================================ -->
+          <article class="glass-panel corner-frame research-card reveal reveal-delay-2">
+            <div class="research-card-media thumb-placeholder">
+              <span class="status-chip status-chip--concept">Concept Study</span>
+              <!-- IMAGE PLACEHOLDER: CAD render or three-view drawing of the aircraft concept -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7l1.4-2.6a1 1 0 0 1 .9-.4h3.4a1 1 0 0 1 .9.4L16 7"/><circle cx="12" cy="14" r="3.5"/></svg>
+              <img src="images/Aeroambulance.png" alt="Aerombulance concept design">
+            </div>
+            <div class="research-card-body">
+              <span class="eyebrow-pill" style="border:1px solid rgba(var(--green-rgb),0.3); background:rgba(var(--green-rgb),0.1); color:var(--green);">Design Project</span>
+              <h3>Aerombulance &dash; Ambulance Aircraft for Medical Operations</h3>
+              <p class="research-card-desc">
+                A conceptual STOL aircraft designed to transport patients quickly from remote areas with short runways, 
+                featuring a PT6A-20 turboprop engine and a modular medical cabin for patient and neonatal care.
+              </p>
+              <div class="tag-row">
+                <span class="tag">CATIA</span>
+                <span class="tag">XFLR5</span>
+                <span class="tag">Plane Maker</span>
+                <span class="tag">X-Plane</span>
+                <span class="tag">Aerodynamics</span>
+                <span class="tag">Flight Stability</span>
+                
+
+              </div>
+              <button type="button" class="read-more-btn" data-modal-target="modal-aerombulance">
+                Read More
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </article>
+          <!-- ============================================================
+               CARD 4 — ADAPTIVE DRONE SWARM BEHAVIOR SIMULATION
+               ============================================================ -->
+          <article class="glass-panel corner-frame research-card reveal reveal-delay-1">
+            <div class="research-card-media thumb-placeholder">
+              <span class="status-chip status-chip--done">Completed</span>
+              <!-- IMAGE: swarm simulation screenshot -->
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M8 7l1.4-2.6a1 1 0 0 1 .9-.4h3.4a1 1 0 0 1 .9.4L16 7"/><circle cx="12" cy="14" r="3.5"/></svg>
+              <img src="images/pattern_O (2) - Copy.png" alt="Adaptive drone swarm simulation">
+            </div>
+            <div class="research-card-body">
+              <span class="eyebrow-pill" style="border:1px solid rgba(var(--cyan-rgb),0.3); background:rgba(var(--cyan-rgb),0.1); color:var(--cyan);">Simulation Project</span>
+              <h3>Adaptive Drone Swarm Behavior Simulation</h3>
+              <p class="research-card-desc">
+                A Python-based 3D simulation of how several drones fly together as a swarm &mdash; keeping their distance,
+                aligning their movement and staying together while avoiding obstacles and heading for a goal.
+              </p>
+              <div class="tag-row">
+                <span class="tag">Python</span>
+                <span class="tag">NumPy</span>
+                <span class="tag">Matplotlib</span>
+                <span class="tag">Multi-Agent Simulation</span>
+                <span class="tag">PID Control</span>
+              </div>
+              <button type="button" class="read-more-btn" data-modal-target="modal-swarm">
+                Read More
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--tight">
+      <div class="container">
+        <h2 class="section-heading reveal" style="margin-bottom: 6px;">Other Projects</h2>
+        <p class="section-lede reveal">
+          Shorter projects and club work that fed directly into the featured research above &ndash;
+          drone hardware, simulation, and applied computer vision.
+        </p>
+
+        <div class="additional-projects-grid">
+          <!-- =====================================================
+               NEW SMALL PROJECT GOES HERE: paste your copied block on
+               the line below this note. See EDIT-GUIDE.html
+               ===================================================== -->
+               <!-- IMAGE PLACEHOLDER: quadcopter build photo -->
+          
+          <!-- IMAGE PLACEHOLDER: aerial survey / orthomosaic thumbnail -->
+          <div class="glass-panel corner-frame mini-project-card reveal reveal-delay-2">
+            <div class="mini-thumb">
+              <span class="status-chip status-chip--done">Completed</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+            <img src="images/orthomosaicmap (2).png " alt="Orthomosaic map of field area">
+            </div>
+            <h3>UAV Mapping and Orthomosaic Generation</h3>
+            <p class="mini-project-tools">Aerial mapping, Orthomosaic Generation, DJI Phantom 4 </p>
+            <ul>
+              <li>Planned and conducted autonomous drone flights for aerial mapping </li>
+              <li>Captured aerial images with approximately 70&ndash;80% overlap for accurate image stitching</li>
+              <li>Processed aerial imagery in DroneDeploy to generate orthomosaic maps</li>
+              <li>Evaluated image coverage, overlap, and orthomosaic quality for mapping applications</li>
+            </ul>
+          </div>
+
+          <!-- IMAGE PLACEHOLDER: Tello face-detection demo screenshot -->
+          <div class="glass-panel corner-frame mini-project-card reveal">
+            <div class="mini-thumb">
+              <span class="status-chip status-chip--done">Completed</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+              <img src="images/droneassembly .png " alt="Drone Assembly and Stability Check">
+            </div>
+            <h3>Drone Assembly and Stability Check</h3>
+            <p class="mini-project-tools">Mission Planner, QGroundControl</p>
+            <ul>
+              <li>Assembled the drone and checked component connections.</li>
+              <li>Configured the flight controller and checked sensor readings.</li>
+              <li>Performed stability checks and test flights to ensure safe operation.</li>
+            
+            </ul>
+          </div>
+
+          <!-- IMAGE PLACEHOLDER: RC plane build/flight photo -->
+          <div class="glass-panel corner-frame mini-project-card reveal reveal-delay-1">
+            <div class="mini-thumb">
+              <span class="status-chip status-chip--done">Completed</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+              <img src="images/RC plane.jpg" alt="RC plane design and fabrication">
+            </div>
+            <h3>Autonomous UAV Navigation using GPS and  Pixhawk</h3>
+            <p class="mini-project-tools">Fixed-wing RC aircraft build</p>
+            <ul>
+              <li>Designed and fabricated an RC fixed-wing aircraft for flight testing</li>
+              <li>Integrated propulsion, control surfaces, and radio communication systems</li>
+              <li>Conducted flight tests and evaluated stability and control performance</li>
+            </ul>
+          </div>
+
+                    <div class="glass-panel corner-frame mini-project-card reveal">
+            <h3>Real Time Face Detection on Tello Drone</h3>
+            <p class="mini-project-tools">Tools: Python, OpenCV, DJI Tello SDK</p>
+            <ul>
+              <li>Developed a real-time face detection system using OpenCV and Python</li>
+              <li>Integrated the system with the DJI Tello video stream</li>
+              <li>Tested live face detection during drone flights</li>
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
+    <!-- ================================================================
+         HIDDEN TEMPLATES — full project detail, injected into the modal
+         by js/main.js (initProjectModal) when a "Read More" button is
+         clicked. Editing project detail? Edit the content inside these
+         <template> tags — nothing here renders until cloned into the modal.
+         ================================================================ -->
+
+    <template id="modal-crop-health">
+      <span class="eyebrow-pill eyebrow-pill--featured">Main Project &middot; Final Year Thesis</span>
+      <h2>UAV-Based Crop Health Monitoring Using RGB Based Imaging</h2>
+      <p class="featured-meta">Final Year Project &middot; B.E. Aerospace Engineering &middot; Pulchowk Campus, IOE &middot; Aug 2025 &ndash; Mar 2026</p>
+      <p class="featured-meta">Team &middot; Basant Karki, Bishal Marasini, Prabin Baniya, Sameer Baskota</p>
+
+      <div class="project-subhead">Overview</div>
+      <p class="project-body-text">
+        The question behind this thesis was simple: is a standard RGB camera on an off-the-shelf drone enough to tell how
+        well a maize crop is getting its nitrogen? A DJI Phantom 4 Pro V2.0 was flown over experimental maize plots at IAAS
+        Rampur Campus, Chitwan. The acquired images were processed into orthomosaic maps, from which six vegetation indices
+        were derived and evaluated against 240 in-situ SPAD chlorophyll measurements.
+      </p>
+      <p class="project-body-text">
+        A Python-based image processing pipeline was developed to separate crop canopy from soil, followed by a 
+        Random Forest classifier to categorize maize canopy into nutrient-sufficient and nutrient-deficient 
+        classes. The workflow integrated UAV flight planning, aerial image acquisition, orthomosaic generation, 
+        vegetation index analysis, and machine learning to produce spatial maps of potential nutrient deficiencies.
+      </p>
+
+            <div class="project-subhead">Objective</div>
+      <p class="project-body-text">
+        To develop a cost-effective UAV-based system for maize crop health assessment by integrating RGB 
+        aerial imagery, vegetation indices, and machine learning to identify nutrient-related stress without
+         requiring expensive multispectral or hyperspectral sensors.
+      </p>
+
+      <div class="project-subhead">Background</div>
+      <p class="project-body-text">
+        Maize is Nepal'ssecond most important staple crop after rice, contributing to food security and rural livelihoods,
+         particularly among smallholder farmers. However, yields remain below global levels, partly due to imbalanced
+         or inadequate nutrient management.
+      </p>
+      <p class="project-body-text">
+        Field studies have established that maize growth and yield vary with nutrient source and fertilizer 
+        composition, with treatment effects commonly evaluated using analysis of variance (ANOVA) and regression.
+         Visible-band vegetation indices, including VARI, GLI, TGI, and NGRDI, offer a non-destructive approach 
+         to assessing crop vigour from canopy colour. However, their application to maize grown under different
+          nutrient management regimes remains limited in the Nepalese context.
+      </p>
+      <p class="project-body-text">
+        In everyday farming, plant health is still judged by eye. That tends to miss early deficiencies and 
+        makes it hard to fertilize at the right rate. This project tries to close the gap by pairing statistics
+         with image-based indices, so that how maize responds to different nutrient treatments is measured rather
+          than guessed.
+      </p>
+
+      <div class="project-subhead">Problem Statement</div>
+      <p class="project-body-text">
+        Manual field scouting for maize nutrient stress is labour-intensive and difficult to scale, while 
+        multispectral and hyperspectral imaging systems remain expensive for many farmers in Nepal. 
+        This study evaluates the use of UAV-acquired RGB imagery, vegetation indices, and machine learning
+         to develop a cost-effective approach for assessing maize crop health and mapping potential
+          nutrient-related stress at the field level.
+      </p>
+
+      <div class="project-subhead">Where It Can Be Used</div>
+      <ul class="plain-list">
+        <li>Enables early identification of potential nutrient deficiencies in maize.</li>
+        <li>Supports site-specific fertilizer application to improve nutrient-use efficiency and crop productivity.</li>
+        <li>Cutting survey labour and cost, since a drone replaces walking the whole field</li>
+        <li>Provides spatial crop health data to support agricultural extension services and evidence-based decision-making.</li>
+        <li>Offers a scalable workflow adaptable to other crops and geographical regions.</li>
+      </ul>
+
+
+      <div class="project-subhead">Methodology</div>
+      <p class="project-body-text">
+        RGB images captured by a DJI Phantom 4 Pro V2.0 were stitched into a georeferenced 
+        <strong>orthomosaic map </strong> . Six vegetation indices <strong>ExG, GLI, NGRDI, and VARI</strong>
+         were calculated to assess maize canopy health and examine their relationship with SPAD-based 
+        chlorophyll measurements. Statistical analysis, including correlation and regression, was used to 
+        study these relationships. A <strong>Random Forest classifier</strong> was also developed using RGB-derived
+         features to identify nutrient-deficient and sufficient maize plants, enabling crop health assessment 
+         without expensive multispectral sensors.
+        
+      </p>
+
+      <div class="project-subhead">Field Experiments</div>
+      <p class="project-body-text">
+        Field experiments were conducted across 24 maize plots comprising six nitrogen treatments and 
+        four replications. RGB imagery was acquired using a DJI Phantom 4 Pro V2.0, and 240 SPAD readings
+         were collected to assess leaf chlorophyll content. These measurements were used to evaluate crop 
+         responses to different nutrient treatments and investigate the relationship between RGB-derived 
+         vegetation indices and maize health.
+      </p>
+
+      <div class="project-subhead">Study Area and Experimental Design</div>
+      <p class="project-body-text">
+        The trial was prepared together with the Nepal Agricultural Research Council (NARC)  at the research
+        farm of IAAS Rampur Campus in Chitwan (about 213 m above sea level), where the subtropical climate suits maize.
+        The land was ploughed repeatedly to get a fine, even seedbed, cleared of weeds and crop residue, levelled and
+        enriched with well-decomposed farmyard manure.
+      </p>
+      <p class="project-body-text">
+        A Randomized Complete Block Design (RCBD) was used: six treatments, four replications and 24 plots of 3 m &times; 3 m,
+        with 1 m between plots and blocks. Crop spacing was 60 cm &times; 25 cm. Randomizing treatments within blocks makes it
+        possible to separate the effect of a treatment from natural variation in the field, such as differences in soil.
+        Rampur Hybrid-12 maize was sown at two seeds per hill and thinned to one plant at the V2 stage, and every plot
+        received the same management apart from its treatment.
+      </p>
+      <p class="project-body-text">
+        The recommended dose was 180:60:60 kg N:P<sub>2</sub>O<sub>5</sub>:K<sub>2</sub>O per hectare. Nitrogen came from urea:
+        one third (60 kg/ha) went on as a basal dose and the other two thirds (120 kg/ha) were split equally between the
+        knee-height and tasseling stages. The six treatments, where RDN means the recommended dose of nitrogen, were:
+      </p>
+      <ul class="plain-list">
+        <li><strong>T1:</strong> control, no nutrient applied</li>
+        <li><strong>T2:</strong> 100% RDN through urea</li>
+        <li><strong>T3:</strong> 100% RDN through urea plus biochar (1 t/ha)</li>
+        <li><strong>T4:</strong> 100% RDN through urea-enriched biochar</li>
+        <li><strong>T5:</strong> 50% RDN through urea and 50% N through cattle-urine-enriched biochar</li>
+        <li><strong>T6:</strong> 50% RDN through urea and 50% N through human-urine-enriched biochar</li>
+      </ul>
+
+      <div class="project-subhead">Equipment and Software</div>
+      <p class="project-body-text">
+        The hardware setup included a DJI Phantom 4 Pro V2.0, a SPAD chlorophyll meter for ground-truth 
+        measurements, a tablet for flight operations, high-speed SD cards, a multi-battery charging hub, and 
+        a workstation for image processing.
+      </p>
+      <p class="project-body-text">
+        The Phantom 4 Pro V2.0 was selected for its high-resolution RGB camera and OcuSync video 
+        transmission. It has a take-off weight of 1,375 g, an approximate flight time of 30 minutes,
+         and a 5,870 mAh battery. Its 20 MP, 1-inch CMOS sensor features an 84&deg; field of view, an 8.8 mm lens,
+          an f/2.8 &mdash; f/11 aperture, and a mechanical shutter. The camera is mounted on a three-axis gimbal,
+           while GPS and GLONASS support positioning.
+        
+          </p>
+      <p class="project-body-text">
+        The software workflow used DroneDeploy for flight planning and orthomosaic generation,
+         DJI GO 4 for flight and camera control, QGIS for vegetation index calculation, canopy masking, 
+         and zonal statistics, and Python for image segmentation and machine learning classification. 
+         Excel was used to manage SPAD measurements, while JMP Pro supported statistical analysis.
+      </p>
+
+      <div class="project-subhead">Flight Preparation and Calibration</div>
+      <p class="project-body-text">
+        The drone came through a collaboration with GeoKrishi, a precision-agriculture organization in Nepal. Before any
+        mapping flight, the team practised at an open test site, moving from manual flying in different wind and light
+        conditions to waypoint and fully autonomous missions. Practice also covered pre-flight checklists, reading
+        telemetry (battery, altitude, GPS signal) and emergency drills such as return-to-home, forced landing and signal
+        loss.
+      </p>
+      <p class="project-body-text">
+        Before every mission the propellers, gimbal, speed controllers, battery and airframe were inspected, the lens was
+        cleaned, exposure was set for the light of the day and white balance was fixed so colours stay consistent across all
+        images. The compass and IMU were calibrated and the GPS lock checked before each take-off.
+      </p>
+
+      <div class="project-subhead">Mission Planning and Data Collection</div>
+      <p class="project-body-text">
+        Every mission was planned in DroneDeploy and adjusted to the field's size and shape, nearby obstacles and the
+        weather. The drone flew a back-and-forth pattern, like mowing a lawn, so the whole field was covered evenly without
+        manual control. Front and side overlap were both set to 80%, which gives plenty of redundant data for accurate 3D
+        models and seamless orthomosaics. Flights were scheduled around midday, when shadows are shortest and brightness is
+        most consistent.
+      </p>
+      <p class="project-body-text">
+        The drone held a steady altitude, speed and heading while its 20 MP camera took pictures at timed intervals. Each
+        photo stored its GPS position and a UTC timestamp in the EXIF data, so the images were georeferenced without ground
+        control points. Because several sites of different sizes were flown, the altitude was adjusted per site to keep
+        image quality and resolution consistent.
+      </p>
+
+      <div class="project-subhead">Orthomosaic Generation</div>
+      <p class="project-body-text">
+        After each flight, the image sets that passed a quality check were processed in DroneDeploy. The software aligned
+        the photos and found tie points using structure from motion, rebuilt a dense 3D point cloud with multi-view stereo
+        and produced a digital surface model of the field. The orthomosaic was then made by projecting and stitching all the
+        images onto one ground plane, correcting for lens distortion, terrain and perspective.
+      </p>
+      <p class="project-body-text">
+        Each orthomosaic was exported as a four-band GeoTIFF in UTM Zone 45N (EPSG:32645) and used for all later work in
+        QGIS. Ground resolution is about 2&ndash;3 cm per pixel, and the mapped area is roughly 1,882 m&sup2;.
+      </p>
+
+      <div class="project-subhead">Separating Canopy from Soil</div>
+      <p class="project-body-text">
+        Two routes were used to keep only maize pixels. The first is a multi-evidence pipeline written in Python with OpenCV
+        for images shot from about three metres, built to cope with changing outdoor light and with weeds that look like
+        maize. Instead of a single threshold it combines four kinds of evidence:
+      </p>
+      <ul class="plain-list">
+        <li><strong>Vegetation indices:</strong> a pixel is kept only when at least two of three indices (ExG, VARI, GLI) pass their thresholds, which removes false positives such as wet soil</li>
+        <li><strong>HSV colour gate:</strong> hues from 22 to 88 with a minimum saturation of 35 and minimum value of 90, which drops grey soil and dark shadows</li>
+        <li><strong>Texture:</strong> the standard deviation of grayscale intensity in a 15 &times; 15 window, because maize leaves are smoother than grass and soil</li>
+        <li><strong>CIE L*a*b* chromaticity:</strong> an extra colour check that is less sensitive to lighting</li>
+      </ul>
+      <p class="project-body-text">
+        The result is refined with GrabCut and saved as a binary mask plus a colour image in which everything except maize
+        is black.
+      </p>
+      <p class="project-body-text">
+        The second route is the QGIS workflow used for the field maps. Normalized Excess Green was calculated with the
+        Raster Calculator and thresholded at zero to make a vegetation mask, the mask was cleaned with the Sieve tool
+        (minimum cluster of 5 to 10 pixels), and the orthomosaic was clipped to it. Only canopy pixels remain, everything
+        else becomes NoData, so soil never leaks into the index values.
+      </p>
+
+      <div class="project-subhead">Vegetation Indices</div>
+      <p class="project-body-text">
+        Six RGB indices, chosen after a literature review, were calculated in QGIS on the masked canopy (R, G and B are the
+        red, green and blue values; a tiny constant of 0.0001 was added to denominators to avoid division by zero):
+      </p>
+      <ul class="formula-list">
+        <li>ExG = 2G &minus; R &minus; B &nbsp;&nbsp;(normalized: (2G &minus; R &minus; B) / (R + G + B))</li>
+        <li>GLI = (2G &minus; R &minus; B) / (2G + R + B)</li>
+        <li>NGRDI = (G &minus; R) / (G + R)</li>
+        <li>VARI = (G &minus; R) / (G + R &minus; B)</li>
+        <li>TGI = G &minus; 0.39R &minus; 0.61B</li>
+        <li>NPCI (RGB approximation) = (R &minus; B) / (R + B)</li>
+      </ul>
+      <p class="project-body-text">
+        NPCI was originally defined with hyperspectral bands, so the broadband red and blue channels stand in for them here.
+        It behaves the opposite way to the greenness indices: a higher value means more carotenoid relative to chlorophyll,
+        which points to nitrogen stress. Each index layer was shown with a red-yellow-green colour ramp, so stressed or bare
+        areas look red and dense, healthy canopy looks green.
+      </p>
+      <p class="project-body-text">
+        The 24 plot boundaries were loaded as a GeoPackage layer in the same coordinate system, and each plot was also split
+        into 16 subplots to make patterns easier to see. The mean of each index per plot was extracted with Zonal Statistics,
+        exported as CSV, joined with the SPAD readings in Excel and passed to JMP Pro for analysis.
+      </p>
+
+      <div class="project-subhead">Statistical Analysis</div>
+      <p class="project-body-text">
+        The ground truth is 240 SPAD readings: 10 for each of the 24 plots. One-way ANOVA at the 0.05 level tested whether
+        the treatments differ in chlorophyll content, after checking normality and equal variance. Pearson correlation and
+        linear regression compared SPAD with each index, and prediction accuracy was measured with RMSE and normalized RMSE.
+        All of this was done in JMP Pro.
+      </p>
+      <p class="project-body-text">
+        Several RGB indices are strongly correlated with one another, so an Adaptive Lasso regression with K-fold validation
+        was also fitted to pick the most useful predictors automatically. The Random Forest classifier used four indices
+        (ExG, VARI, NGRDI and GLI) per pixel, an 80/20 train and test split, and 500 trees with balanced class weights.
+      </p>
+
+      <div class="project-subhead">Machine Learning Workflow</div>
+      <p class="project-body-text">
+        
+          The workflow started with RGB images captured using a DJI Phantom 4 Pro V2.0, 
+          which were stitched into a georeferenced <strong>orthomosaic map</strong> of the maize field. 
+            Python and OpenCV were used to separate maize vegetation from the background through colour thresholding, 
+            vegetation indices, texture filtering, and GrabCut segmentation. Four vegetation indices  <strong>ExG, VARI, 
+            NGRDI, and GLI</strong>  were extracted as features for a <strong>Random Forest classifier</strong> trained 
+            to classify maize samples as nutrient-sufficient or nutrient-deficient. The dataset was split into 80% 
+               training data and 20% testing data, and the model was evaluated using accuracy, precision, recall, F1-score, 
+        and a confusion matrix. It achieved <strong>91.6% accuracy</strong> and <strong>94.7% recall for
+     the deficient class</strong>. For spatial mapping, new images were divided into 30 x 30 pixel tiles, 
+     and the predictions were combined to estimate overall crop health. The project also explored spatial
+      patterns using an 8 x 8 grid-based feature analysis. Alongside classification, SPAD chlorophyll readings
+       were compared with six vegetation indices  <strong>ExG, GLI, NGRDI, VARI, TGI, and NPCI</strong> using 
+       correlation analysis, linear regression, ANOVA, and Adaptive Lasso regression to investigate how RGB 
+       imagery could help assess maize chlorophyll status.
+
+      </p>
+
+      <div class="project-subhead">Tools Used</div>
+      <div class="tag-row featured-tags">
+        <span class="tag">DJI Phantom 4</span>
+        <span class="tag">Python</span>
+        <span class="tag">OpenCV</span>
+        <span class="tag">Scikit-learn (Random Forest)</span>
+        <span class="tag">QGIS</span>
+        <span class="tag">Vegitation Indices : ExG, GLI, NGRDI and VARI </span>
+        <span class="tag">DroneDeploy</span>
+        
+
+      </div>
+
+      
+      <div class="project-subhead">Results</div>
+      <ul class="highlight-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Achieved <strong>91.6% accuracy</strong> in classifying nutrient-deficient and nutrient-sufficient maize samples.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Detected nutrient-deficient samples with<strong>94.7% recall</strong>.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Analysed the relationship between RGB vegetation indices and SPAD-based chlorophyll readings.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Mapped crop-health patterns using image segmentation, grid-based analysis, and tile-level predictions.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Demonstrated how affordable RGB drone imagery and machine learning can support crop-health monitoring without multispectral sensors.</li>
+      </ul>
+
+      <div class="project-subhead">Results: Effect of Treatments on Chlorophyll</div>
+      <p class="project-body-text">
+        Treatment had an extremely significant effect on SPAD (F = 24.30, p &lt; 0.0001). The control (T1) had the lowest mean
+        SPAD at 41.64, and the highest values came from the full nitrogen doses: 49.60 for T3 (100% RDN plus biochar) and
+        49.51 for T2 (100% RDN). Urea-enriched biochar (T4) reached 49.27, statistically comparable to the full urea
+        treatments, which suggests biochar enrichment is an effective way to deliver nitrogen. The urine-enriched treatments
+        sat in the middle, with 47.19 for T6 (human urine) and 46.51 for T5 (cattle urine).
+      </p>
+      <p class="project-body-text">
+        An ANOVA across the four replications showed no significant difference between blocks (p = 0.7951), confirming that
+        variation between blocks was well controlled.
+      </p>
+
+      <div class="project-subhead">Results: Vegetation Indices against SPAD</div>
+      <p class="project-body-text">
+        To see whether low-cost imagery can monitor maize, each index was correlated with SPAD (n = 24). NPCI had the
+        strongest relationship, a negative one (r = &minus;0.736, R<sup>2</sup> = 0.54), which fits the idea that more carotenoid
+        relative to chlorophyll goes with lower chlorophyll. VARI was strongly positive (r = 0.730, R<sup>2</sup> = 0.53) and TGI
+        strongly negative (r = &minus;0.726, R<sup>2</sup> = 0.53). NGRDI was also strong and positive (r = 0.702), while GLI was weak and
+        not significant (r = 0.392, p = 0.058). All the strong correlations had p below 0.001.
+      </p>
+
+      <div class="project-subhead">Results: Predicting SPAD from Imagery</div>
+      <p class="project-body-text">
+        VARI and NGRDI are almost the same signal (r = 0.987), so a plain single-index regression undersells the data. The
+        Adaptive Lasso kept TGI, NGRDI and NPCI and dropped VARI and GLI. TGI turned out to be the most important predictor
+        (Wald &chi;<sup>2</sup> = 18.22, p &lt; 0.0001), which the team links to the way chlorophyll deepens red absorption. The final model for
+        estimating SPAD without touching the plant is:
+      </p>
+      <ul class="formula-list">
+        <li>SPAD = 109.872 + 47.742 &times; NGRDI &minus; 43.773 &times; NPCI &minus; 1.268 &times; TGI</li>
+      </ul>
+      <p class="project-body-text">
+        On both the training set (n = 20) and the independent validation set (n = 4), the points sit close to the 1:1 line,
+        from the nitrogen-deficient control up to the urea-enriched biochar plots. Residuals scatter randomly around zero,
+        typically within about 2 SPAD units, so the model looks unbiased across different levels of canopy vigour.
+      </p>
+
+      <div class="project-subhead">Results: Health Map and Random Forest</div>
+      <p class="project-body-text">
+        For the plot-level health map, thresholds were set on VARI, NGRDI and NPCI in the QGIS Field Calculator, using SPAD
+        below 45 as the reference for nitrogen stress. A plot counts as healthy only if all three conditions hold. At the
+        early vegetative stage the limits were VARI &ge; 0.30, NGRDI &ge; 0.197 and NPCI &le; 0.078; at silking they were 0.31,
+        0.193 and 0.036. The NPCI limit is lower at silking because the canopy is full and greenest by then. Every
+        nitrogen-deficient plot was flagged unhealthy and shown in red, which matched the field.
+      </p>
+      <p class="project-body-text">
+        The Random Forest was tested on 215 held-out samples (114 deficient, 101 sufficient). It classified 108 deficient and
+        89 sufficient samples correctly and missed 6 deficient and 12 sufficient ones. That gives 91.6% accuracy, 90%
+        precision and 94.7% recall for the deficient class, and an F1 score of 92.3%. Recall on the deficient class matters
+        most, because a missed deficiency has real consequences for the crop.
+      </p>
+      <p class="project-body-text">
+        For feature importance, each image was split into an 8 &times; 8 grid and the mean of each index in each cell was used,
+        giving 192 spectral and spatial features; regional vegetation patterns carried most of the weight. To classify a new
+        image, the model works tile by tile on a 30 &times; 30 grid and averages the tile predictions into one image-level
+        result.
+      </p>
+
+      <div class="project-subhead">Limitations</div>
+      <ul class="plain-list">
+        <li>The RGB sensor has no narrow spectral bands, which limits the accuracy of the vegetation analysis</li>
+        <li>With no near-infrared band, reliable indices such as NDVI cannot be calculated</li>
+        <li>Changing sunlight causes inconsistencies in image quality and reflectance</li>
+        <li>Limited flight time meant several missions per site, which adds small time differences to the data</li>
+        <li>The results apply to one maize variety in one season</li>
+      </ul>
+
+      <div class="project-subhead">Challenges Faced</div>
+      <ul class="plain-list">
+        <li>Variable weather often interrupted the flights</li>
+        <li>Short battery life meant several flights were needed to finish data collection</li>
+        <li>Generating the orthomosaics was slow and had to be repeated several times</li>
+        <li>Ground measurements varied with differences in how samples were taken</li>
+        <li>Repeated data collection and processing pushed the timeline back</li>
+      </ul>
+
+      <div class="project-subhead">Conclusion</div>
+      <p class="project-body-text">
+        A standard commercial RGB camera on a DJI Phantom 4 Pro V2.0 turned out to be good enough for quantitative maize
+        health assessment. High-resolution RGB imagery carries enough spectral information to serve as a reliable,
+        non-destructive and cheaper alternative to manual SPAD sampling and to expensive multispectral sensors.
+      </p>
+      <p class="project-body-text">
+        Nutrient treatments changed leaf chlorophyll significantly, and urea-enriched biochar performed about as well as full
+        chemical urea, pointing to biochar as a sustainable way to supply nitrogen. Among the visible-band indices, NPCI and
+        VARI correlated most strongly with SPAD, and TGI was the most significant variable in the multi-index model. The
+        Adaptive Lasso model predicts SPAD from imagery, and the Random Forest reached 91.6% accuracy in telling
+        nutrient-sufficient zones from nutrient-deficient ones. Together they offer a scalable, high-throughput way to
+        monitor crops.
+      </p>
+
+      <div class="project-subhead">Future Enhancements</div>
+      <p class="project-body-text">
+        Future work will focus on adding low-cost NIR or multispectral sensors to improve 
+        crop-health assessment beyond RGB imagery. The system could also be deployed on an onboard companion 
+        computer to process images in real time and provide alerts during drone flights. Expanding the dataset
+        across different growing seasons, field conditions, and crop types would help improve the model's 
+        reliability and make it useful for a wider range of agricultural applications.
+      </p>
+
+      <div class="project-subhead">Acknowledgements</div>
+      <p class="project-body-text">
+        We are grateful to our supervisors, Asst. Prof. Kamal Darlami and Asst. Prof. Swaviman Acharya; to GeoKrishi for the
+        drone and guidance; to the Nepal Agricultural Research Council in Chitwan and IAAS Rampur Campus for field access and
+        support; and to DroneDeploy for the mapping software. The project code is archived on Zenodo:
+        <a href="https://doi.org/10.5281/zenodo.19250839" target="_blank" rel="noopener">doi:10.5281/zenodo.19250839</a>.
+      </p>
+
+      <div class="project-subhead">Image Gallery</div>
+      <div class="gallery-grid">
+        <!-- IMAGE PLACEHOLDER: field setup photo (ground crew, plot markers) -->
+        <div class="thumb-placeholder">
+  <img src="images/mission planning.jpg" alt="Mission Planning" class="thumb-image">
+  <span>     Mission Planning</span>
+</div>
+        <!-- IMAGE PLACEHOLDER: drone image acquisition (Phantom 4 mid-flight over plots) -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/field setup.png" alt="Field Setup" class="thumb-image">
+          <span>Field Setup</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: orthomosaic map output -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/orthomoisicmap (2).jpg" alt="Orthomosaic Map" class="thumb-image">
+          <span>Orthomosaic map</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: confusion matrix screenshot -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+         <img src="images/confusion matrix.png" alt="Confusion Matrix" class="thumb-image">
+          <span>Confusion matrix</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: feature importance graph -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/feature.png" alt="Feature Importance" class="thumb-image">
+          <span>Feature importance graph</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: QGIS output / plot classification map -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/QGIS_classification.png" alt="QGIS Classification Output" class="thumb-image">
+          <span>QGIS classification output</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: additional field photograph -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/spad_prediction.png" alt="SPAD Prediction" class="thumb-image">
+          <span>SPAD Prediction</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: additional field photograph -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/Used drone .jpg" alt="Dji Phantom 4" class="thumb-image">
+          <span>Dji Phantom 4</span>
+        </div>
+        <!-- PROJECT VIDEO (YouTube): paste your YouTube link where it says PASTE-YOUR-YOUTUBE-LINK-HERE -->
+        <div class="thumb-placeholder">
+          <div class="video-embed" data-youtube="PASTE-YOUR-YOUTUBE-LINK-HERE">
+            <iframe title="Project video" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+          </div>
+          <span>Project video</span>
+        </div>
+      </div>
+    
+      <div class="project-subhead">Report</div>
+      <div class="report-box">
+        <div class="report-info">
+          <span class="report-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg></span>
+          <div>
+            <strong>Full project report (PDF)</strong>
+            <span class="report-note">The complete write-up: methods, results and references.</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <a href="assets/reports/crop-health-report.pdf" target="_blank" rel="noopener" class="btn btn--primary">View report</a>
+          <a href="assets/reports/crop-health-report.pdf" download class="btn btn--ghost">Download</a>
+        </div>
+      </div>
+    </template>
+
+    <template id="modal-research-paper">
+      <span class="eyebrow-pill" style="border:1px solid rgba(var(--cyan-rgb),0.3); background:rgba(var(--cyan-rgb),0.1); color:var(--cyan);">Samsung Innovation Campus Project</span>
+      <h2>Research Paper Ranking and Recommendation System</h2>
+      <p class="featured-meta">Samsung Innovation Campus (SIC) &middot; May 2025</p>
+
+      <div class="project-subhead">Overview</div>
+      <p class="project-body-text">
+       Developed a web-based AI tool during the Samsung Innovation Campus (SIC) program to streamline 
+       academic literature screening. The system processes research papers in PDF format, filters them,
+       and ranks them according to their relevance to user queries.
+      </p>
+      <p class="project-body-text">
+        Unlike keyword-based approaches, it integrates Natural Language Processing (NLP) and 
+        Computer Vision to analyze both textual content and visual elements, including figures, graphs, 
+        and tables. This enables more comprehensive relevance assessment and reduces the time required for 
+        manual paper screening.
+      </p>
+
+      <div class="project-subhead">Objective</div>
+      <p class="project-body-text">
+        Developed a web-based AI tool that automatically filters and ranks academic papers by relevance, 
+        reducing the time and effort required for manual literature screening.
+      </p>
+
+      <div class="project-subhead">Problem Statement</div>
+      <p class="project-body-text">
+        Researchers often receive too many search results when looking for academic papers. 
+        Keyword-based searches may miss papers that are relevant in 
+        meaning, methodology, or experimental results. Important 
+        information is also stored in figures, graphs, and tables that can 
+        be difficult to extract and compare. This project addresses these 
+        challenges by combining natural language processing and computer vision
+        to analyze research papers and rank them according to their relevance.
+      </p>
+
+      <div class="project-subhead">Methodology</div>
+      <p class="project-body-text">
+        The system processes research papers in PDF format 
+        and extracts their text, figures, graphs, and tables. 
+        <strong>Tesseract OCR</strong> helps extract text from visual content, 
+        while <strong>OpenCV</strong> supports image and figure processing. 
+        <strong>Transformer-based models</strong>, including <strong>SciBERT</strong> and <strong>SBERT</strong>, 
+        are used to measure semantic similarity between papers 
+        and identify relevant research beyond simple keyword matching. 
+        Textual, graphical, and tabular similarity scores are combined
+         to rank papers. The system provides an interactive interface 
+         through <strong>Streamlit</strong>, with FastAPI used for the backend.
+      </p>
+
+      <div class="project-subhead">How the System Works</div>
+      <ol class="step-list">
+        <li><strong>Take in the papers.</strong> Research papers come in as PDF files and are broken into three kinds of content: running text, figures and graphs, and tables.</li>
+        <li><strong>Read the visual content.</strong> Tesseract OCR extracts text from visual material, and OpenCV supports the image and figure processing.</li>
+        <li><strong>Understand meaning.</strong> Transformer-based language models, SciBERT and SBERT, measure semantic similarity, so papers are compared by what they say and not only by the words they share.</li>
+        <li><strong>Score similarity.</strong> Separate similarity scores are produced for the text, the graphics and the tables.</li>
+        <li><strong>Combine and rank.</strong> The textual, graphical and tabular scores are combined into one relevance score that sets each paper's rank.</li>
+        <li><strong>Explore the results.</strong> An interactive Streamlit interface lets researchers browse and compare the ranked papers, with FastAPI running the backend.</li>
+      </ol>
+
+      <div class="project-subhead">Key Features</div>
+      <ul class="plain-list">
+        <li>Matches papers by meaning, so relevant work is not missed just because it uses different wording</li>
+        <li>Treats figures, graphs and tables as evidence too, not only the text</li>
+        <li>Merges text, graphical and tabular similarity into a single relevance ranking</li>
+        <li>Runs in the browser through a simple interface for exploring and comparing papers</li>
+      </ul>
+
+      <div class="project-subhead">Tools Used</div>
+      <div class="tag-row featured-tags">
+        <span class="tag">Python</span>
+        <span class="tag">SciBERT</span>
+        <span class="tag">SBERT</span>
+        <span class="tag">OpenCV</span>
+        <span class="tag">Tesseract OCR</span>
+        <span class="tag">NPL</span>
+      </div>
+
+      <div class="project-subhead">Results</div>
+      <ul class="highlight-list">
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Developed an AI-based framework for filtering and ranking academic research papers.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Combined text, graphical, and tabular similarity to evaluate paper relevance.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Used transformer-based language models to compare research content based on meaning.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Incorporated OCR and computer vision techniques to process figures, graphs, and tables.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Designed a web-based interface for exploring and comparing relevant research papers.</li>
+
+      </ul>
+
+      <div class="project-subhead">Future Enhancements</div>
+      <p class="project-body-text">
+        Future improvements include integrating academic databases such as IEEE Xplore and SpringerLink, 
+        generating automatic summaries of relevant papers, improving recommendations based on user feedback, 
+        and adding support for research papers in multiple languages.
+      </p>
+
+      <div class="project-subhead">Image Gallery</div>
+      <div class="gallery-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <!-- IMAGE PLACEHOLDER: interface / dashboard screenshot -->
+        <div class="thumb-placeholder">
+          <img src="images/interface-screenshot.png" alt="Interface screenshot" class="thumb-image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <span>Interface screenshot</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: results / evaluation chart -->
+        <div class="thumb-placeholder">
+          <img src="images/evaluation_results.png" alt="Evaluation results chart" class="thumb-image">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <span>Evaluation results chart</span>
+        </div>
+      </div>
+    
+      <div class="project-subhead">Report</div>
+      <div class="report-box">
+        <div class="report-info">
+          <span class="report-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg></span>
+          <div>
+            <strong>Full project report (PDF)</strong>
+            <span class="report-note">The complete write-up: methods, results and references.</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <a href="assets/reports/research-paper-report.pdf" target="_blank" rel="noopener" class="btn btn--primary">View report</a>
+          <a href="assets/reports/research-paper-report.pdf" download class="btn btn--ghost">Download</a>
+        </div>
+      </div>
+    </template>
+
+    <template id="modal-aerombulance">
+      <span class="eyebrow-pill" style="border:1px solid rgba(var(--green-rgb),0.3); background:rgba(var(--green-rgb),0.1); color:var(--green);">Design Project</span>
+      <h2>Aerombulance &dash; Ambulance Aircraft for Medical Operations</h2>
+      <p class="featured-meta">Design Project &middot; B.E. Aerospace Engineering &middot; Pulchowk Campus, IOE &middot; July 2025</p>
+
+      <div class="project-subhead">Overview</div>
+      <p class="project-body-text">
+        Aerombulance is a preliminary design study for a fixed-wing STOL (short take-off and landing) aircraft that could
+        carry patients out of remote parts of Nepal, where roads are poor and runways are short or unpaved. It was done as
+        a design project in the B.E. Aerospace Engineering programme at Pulchowk Campus in July 2025.
+      </p>
+      <p class="project-body-text">
+        The concept is a high-wing, twin-engine turboprop with a dedicated medical cabin that holds two stretcher patients
+        and a neonatal intensive care unit (NICU), so newborns can be moved as well as adult patients.
+      </p>
+
+      <div class="project-subhead">Objective</div>
+      <p class="project-body-text">
+        Developed a preliminary STOL aircraft concept for medical evacuation from remote areas of Nepal.
+         The design focuses on transporting patients, including neonatal cases, from locations with short
+          or unimproved runways.
+      </p>
+
+      <div class="project-subhead">Problem Statement</div>
+      <p class="project-body-text">
+        Reaching emergency patients in Nepal's remote and mountainous regions can be challenging 
+        due to limited road access and runway infrastructure. Aerombulance explores a <strong>fixed-wing STOL</strong> 
+        aircraft as an alternative for medical evacuation, with a dedicated cabin designed for stretcher
+        patients and neonatal care.
+      </p>
+
+      <div class="project-subhead">Methodology</div>
+      <p class="project-body-text">
+        
+The project began with defining the mission requirements and selecting a 
+suitable aircraft configuration for short-field operations. A high-wing, twin-engine<strong>turboprop</strong>  aircraft 
+concept powered by <strong>Pratt & Whitney PT6A-20</strong> engines was developed, with a medical cabin designed for 
+two stretcher patients and neonatal care. <strong>CATIA</strong> was used for aircraft modelling, 
+while <strong>XFLR5</strong> and <strong>Plane Maker</strong> supported
+ aerodynamic, stability, control, and flight-performance analysis. The study also examined dynamic 
+ stability modes, takeoff and stall characteristics, climb and descent performance, and flight and
+gust envelopes.
+.
+      </p>
+
+      <div class="project-subhead">Design Process</div>
+      <ol class="step-list">
+        <li><strong>Define the mission.</strong> Emergency evacuation from remote areas with short or unimproved runways, including neonatal cases.</li>
+        <li><strong>Choose the configuration.</strong> A high-wing, twin-engine turboprop concept for short-field operation, powered by two Pratt &amp; Whitney PT6A-20 engines.</li>
+        <li><strong>Design the medical cabin.</strong> Space for two stretcher patients plus neonatal care.</li>
+        <li><strong>Model the aircraft.</strong> The airframe and layout were modelled in CATIA.</li>
+        <li><strong>Size and analyse.</strong> XFLR5 and Plane Maker supported the aerodynamic sizing and the stability, control and flight-performance analysis.</li>
+        <li><strong>Check the flight behaviour.</strong> Dynamic stability modes, take-off and stall characteristics, climb and descent performance, and the flight and gust envelopes were all examined.</li>
+        <li><strong>Review and flag improvements.</strong> Yaw stability and handling qualities were identified as areas that need further work.</li>
+      </ol>
+
+      <div class="project-subhead">Tools Used</div>
+      <div class="tag-row featured-tags">
+        <span class="tag">CATIA</span>
+        <span class="tag">XFLR5</span>
+        <span class="tag">X- Plane</span>
+        <span class="tag">Plane Maker</span>
+        <span class="tag">Stability &amp; Control Analysis</span>
+        <span class="tag">PT6A-20 Turboprop</span>
+      </div>
+
+      <div class="project-subhead">Key Design Specifications</div>
+      
+<ul class="highlight-list">
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Powerplant: Twin Pratt &amp; Whitney PT6A-20 turboprop engines</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Configuration: High-wing, fixed-wing STOL aircraft designed for short-field operations</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Mission role: Medical evacuation from remote areas, including patient and neonatal transport</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Medical cabin: Designed for two stretcher patients and a neonatal intensive care unit (NICU)</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Maximum take-off weight (MTOW): 5,200 kg</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Range and endurance: 1,200 km and 5.1 hours</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Cruise speed: 160 knots</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Maximum speed: 170 knots</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Stall speed: 83 knots</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Absolute ceiling: 7,620 m</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Fuselage length: 15.7 m</li>
+</ul>
+
+
+      <div class="project-subhead">Results</div>
+      
+
+<ul class="highlight-list">
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Developed a preliminary STOL aircraft concept for medical evacuation from remote areas.</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Completed aerodynamic sizing and analysed aircraft stability and flight performance.</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Evaluated takeoff, stall, climb, and descent characteristics, along with flight and gust envelopes.</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Reported a best climb angle of 4.47° at 178.06 KTAS.</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Met the reported design targets of 1,200 km range and 5.1 hours endurance.</li>
+  <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="8 12 11 15 16 9"/></svg> Identified yaw stability and handling qualities as areas for further improvement.</li>
+</ul>
+
+
+
+      <div class="project-subhead">Future Enhancements</div>
+      <p class="project-body-text">
+        Next steps include detailed structural sizing, CFD-based aerodynamic validation of the
+        STOL configuration, and scale-model or prototype testing to verify short-field
+        performance predictions.
+      </p>
+
+      <div class="project-subhead">Image Gallery</div>
+      <div class="gallery-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <!-- IMAGE PLACEHOLDER: CAD render of full aircraft -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/cadlayout.jpg" alt="CAD of full aircraft" class="thumb-image">
+          <span>CAD render  full aircraft</span>
+        </div>
+        <!-- IMAGE PLACEHOLDER: medical cabin layout / interior render -->
+        <div class="thumb-placeholder">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="12" cy="14" r="3.5"/></svg>
+          <img src="images/Internal layout.jpg" alt="Medical cabin layout" class="thumb-image">
+          <span>Medical cabin layout</span>
+        </div>
+      </div>
+    
+      <div class="project-subhead">Report</div>
+      <div class="report-box">
+        <div class="report-info">
+          <span class="report-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg></span>
+          <div>
+            <strong>Full project report (PDF)</strong>
+            <span class="report-note">The complete write-up: methods, results and references.</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <a href="assets/reports/aerombulance-report.pdf" target="_blank" rel="noopener" class="btn btn--primary">View report</a>
+          <a href="assets/reports/aerombulance-report.pdf" download class="btn btn--ghost">Download</a>
+        </div>
+      </div>
+    </template>
+
+    <template id="modal-swarm">
+      <span class="eyebrow-pill" style="border:1px solid rgba(var(--cyan-rgb),0.3); background:rgba(var(--cyan-rgb),0.1); color:var(--cyan);">Simulation Project</span>
+      <h2>Adaptive Drone Swarm Behavior Simulation</h2>
+      <p class="featured-meta">Simulation Project &middot; Jan 2025</p>
+
+      <div class="project-subhead">Overview</div>
+      <p class="project-body-text">
+        This project is a Python-based simulation, built in January 2025, that studies how a group of drones can work
+        together as a swarm. It runs in a 3D environment and comes with an interactive interface for watching and monitoring
+        the swarm as it moves.
+      </p>
+
+      <div class="project-subhead">Objective</div>
+      <p class="project-body-text">
+        Study and demonstrate, in a simulated 3D space, how several drones can coordinate as one swarm: staying together,
+        moving in step, holding formations, and avoiding obstacles on the way to a goal.
+      </p>
+
+      <div class="project-subhead">Problem Statement</div>
+      <p class="project-body-text">
+        A group of drones only behaves as a swarm if every member keeps a safe distance from its neighbours, stays with the
+        group and still reaches a common goal, all without a pilot steering each aircraft. Trying this directly on real
+        drones is risky and slow, so a simulation is a practical way to develop and compare the control rules first.
+      </p>
+
+      <div class="project-subhead">Methodology</div>
+      <p class="project-body-text">
+        The simulation is built from a few simple behaviours that, combined, make the swarm adapt to its surroundings:
+      </p>
+      <ol class="step-list">
+        <li><strong>Basic swarm rules.</strong> Each drone keeps its distance from neighbours, aligns its movement with them and stays close to the group.</li>
+        <li><strong>Formations.</strong> Different drone formations and coordinated swarm movements were simulated.</li>
+        <li><strong>Navigation and obstacle avoidance.</strong> Goal navigation and obstacle avoidance were developed with PID control and repulsion forces, which push a drone away from obstacles while it moves towards its goal.</li>
+        <li><strong>Visualization.</strong> An interactive interface built with Tkinter and Matplotlib displays and simulates the drone movements in a 3D environment, so the swarm can be observed and monitored.</li>
+      </ol>
+
+      <div class="project-subhead">Tools Used</div>
+      <div class="tag-row featured-tags">
+        <span class="tag">Python</span>
+        <span class="tag">NumPy</span>
+        <span class="tag">Matplotlib</span>
+        <span class="tag">Tkinter</span>
+        <span class="tag">Multi-Agent Simulation</span>
+        <span class="tag">PID Control</span>
+      </div>
+
+      <div class="project-subhead">Results</div>
+      <ul class="highlight-list">
+        <li> Built a Python-based 3D simulation to study how multiple drones work together as a swarm.</li>
+        <li> Implemented algorithms that help drones maintain distance, align their movements and stay together.</li>
+        <li> Simulated different drone formations and coordinated swarm movements.</li>
+        <li> Developed obstacle avoidance and goal navigation using PID control and repulsion forces.</li>
+        <li> Created an interactive interface to visualize and monitor the swarm in 3D.</li>
+      </ul>
+
+      <div class="project-subhead">Future Enhancements</div>
+      <p class="project-body-text">
+        Possible next steps include testing the same rules on real drones, adding realistic effects such as sensor noise and
+        limited communication range between drones, and comparing more formations and larger swarms.
+      </p>
+
+            <div class="project-subhead">Image Gallery</div>
+      <div class="gallery-grid" style="grid-template-columns: repeat(2, 1fr);">
+        <div class="thumb-placeholder">
+          <img src="images/pattern_S.png" alt="Adaptive drone swarm simulation" class="thumb-image">
+          <span>Swarm simulation</span>
+        </div>
+        <div class="thumb-placeholder">
+          <img src="images/obstacle.png" alt="Obstacle avoidance in drone swarm" class="thumb-image">
+          <span>Obstacle avoidance</span>
+        </div>
+      </div>
+
+      <div class="project-subhead">Report</div>
+      <div class="report-box">
+        <div class="report-info">
+          <span class="report-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="14" y2="17"/></svg></span>
+          <div>
+            <strong>Full project report (PDF)</strong>
+            <span class="report-note">The complete write-up: methods, results and references.</span>
+          </div>
+        </div>
+        <div class="report-actions">
+          <a href="assets/reports/swarm-report.pdf" target="_blank" rel="noopener" class="btn btn--primary">View report</a>
+          <a href="assets/reports/swarm-report.pdf" download class="btn btn--ghost">Download</a>
+        </div>
+      </div>
+    </template>
+    <!-- =====================================================
+         NEW "READ MORE" POP-UP DETAILS GO HERE (advanced): paste a
+         <template> block above this note. See EDIT-GUIDE.html
+         ===================================================== -->
+
+    <!-- Shared project modal shell — content is injected here by js/main.js -->
+    <div class="project-modal-overlay" id="project-modal">
+      <div class="project-modal glass-panel" role="dialog" aria-modal="true" aria-labelledby="project-modal-heading">
+        <div class="project-modal-bar">
+          <button type="button" class="project-modal-back" id="project-modal-back">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+            Back to projects
+          </button>
+          <button type="button" class="project-modal-close" id="project-modal-close" aria-label="Close project details">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+        <div class="project-modal-body" id="project-modal-body"></div>
+      </div>
+    </div>
+
+  </main>
+
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-name">Sameer Baskota</div>
+          <div class="footer-title">Aerospace Engineering Graduate &middot; UAV &amp; AI Researcher</div>
+          <p class="footer-tagline">
+            Building UAV-based research tools at the intersection of aerospace engineering,
+            artificial intelligence, and precision agriculture.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <div class="footer-col-heading">Contact</div>
+          <div class="footer-list">
+            <a href="mailto:sameerbaskota821@gmail.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+              sameerbaskota821@gmail.com
+            </a>
+            <a href="tel:+9779864758824">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +977-9864758824
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col-heading">Elsewhere</div>
+          <div class="footer-list">
+            <a href="https://github.com/sameerbaskota" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C7.5 2.8 6.4 3.1 6.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 5 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+              GitHub
+            </a>
+            <a href="https://linkedin.com/in/sameerbaskota21/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="11" x2="8" y2="16"/><line x1="8" y1="8" x2="8" y2="8.01"/><path d="M12 16v-3a2 2 0 0 1 4 0v3"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://sameerbaskota.com.np" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14.5 14.5 0 0 1 0 18 14.5 14.5 0 0 1 0-18z"/></svg>
+              sameerbaskota.com.np
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; <span id="year">2026</span> Sameer Baskota. All rights reserved.</span>
+        <span>27.6825&deg; N, 85.3170&deg; E &middot; Lalitpur, Nepal</span>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+
+  <script src="js/main.js"></script>
+  <script>
+document.addEventListener('click', function (e) {
+  var img = e.target.closest('.gallery-grid .thumb-image');
+  if (!img) return;
+
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.92);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px;cursor:zoom-out;';
+
+  var big = document.createElement('img');
+  big.src = img.src;
+  big.alt = img.alt;
+  big.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;';
+
+  var close = document.createElement('div');
+  close.textContent = '\u2715';
+  close.style.cssText = 'position:absolute;top:16px;right:24px;color:#fff;font-size:32px;';
+
+  function shut() {
+    overlay.remove();
+    document.removeEventListener('keydown', onKey);
+  }
+  function onKey(ev) { if (ev.key === 'Escape') shut(); }
+
+  overlay.addEventListener('click', shut);
+  document.addEventListener('keydown', onKey);
+
+  overlay.appendChild(big);
+  overlay.appendChild(close);
+  document.body.appendChild(overlay);
+});
+</script>
+  <script>
+/* Project video (YouTube): paste any YouTube link into data-youtube on the card.
+   Loads only while the pop-up is open, loops, starts muted; the player's own
+   button opens it full screen. */
+(function () {
+  var modal = document.getElementById('project-modal');
+  var body = document.getElementById('project-modal-body');
+
+  function videoId(url) {
+    var m = String(url || '').match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:.*&)?v=|embed\/|shorts\/|live\/|v\/))([A-Za-z0-9_-]{11})/);
+    return m ? m[1] : null;
+  }
+  function boxes() { return document.querySelectorAll('#project-modal-body .video-embed'); }
+
+  function start() {
+    boxes().forEach(function (box) {
+      var frame = box.querySelector('iframe');
+      var id = videoId(box.getAttribute('data-youtube'));
+      if (!id) { box.parentNode.style.display = 'none'; return; }
+      var src = 'https://www.youtube-nocookie.com/embed/' + id +
+        '?autoplay=1&mute=1&loop=1&playlist=' + id + '&playsinline=1&rel=0&modestbranding=1';
+      if (frame.getAttribute('src') !== src) frame.setAttribute('src', src);
+    });
+  }
+  function stop() {
+    boxes().forEach(function (box) {
+      var frame = box.querySelector('iframe');
+      if (frame && frame.getAttribute('src') !== 'about:blank') frame.setAttribute('src', 'about:blank');
+    });
+  }
+
+  if (modal) {
+    new MutationObserver(function () {
+      if (modal.classList.contains('is-open')) start(); else stop();
+    }).observe(modal, { attributes: true, attributeFilter: ['class'] });
+  }
+  if (body) {
+    new MutationObserver(function () {
+      if (modal && modal.classList.contains('is-open')) start();
+    }).observe(body, { childList: true });
+  }
+})();
+</script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

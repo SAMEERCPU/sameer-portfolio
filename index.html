@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    // Runs synchronously before first paint — two jobs:
+    // 1) if the radar loader already played this session, mark <html> so
+    //    the matching CSS rule hides #loader instantly on this page too.
+    // 2) apply the saved light/dark theme preference before paint so
+    //    there is never a flash of the wrong theme.
+    (function () {
+      try {
+        if (sessionStorage.getItem('sbLoaderShown')) {
+          document.documentElement.className += ' no-loader';
+        }
+      } catch (e) { /* sessionStorage unavailable — loader just replays */ }
+      try {
+
+        document.documentElement.setAttribute('data-theme', 'light');
+        var savedTheme = localStorage.getItem('sbTheme');
+        if (savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      } catch (e) { /* localStorage unavailable — stays on the light theme */ }
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sameer Baskota | Aerospace Engineer · UAV & AI Researcher</title>
+  <meta name="description" content="Portfolio of Sameer Baskota, an Aerospace Engineering student at Pulchowk Campus (IOE, Tribhuvan University) building UAV-based crop health monitoring, computer vision">
+  <meta name="keywords" content="Sameer Baskota, Aerospace Engineering, UAV, Drone Mapping, Precision Agriculture, Computer Vision, Remote Sensing, Pulchowk Campus, Tribhuvan University, AgriTech, Machine Learning">
+  <meta name="author" content="Sameer Baskota">
+  <link rel="canonical" href="https://sameerbaskota.com.np">
+
+
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sameerbaskota.com.np">
+  <meta property="og:site_name" content="Sameer Baskota">
+  <meta property="og:title" content="Sameer Baskota — Aerospace Engineer · UAV & AI Researcher">
+  <meta property="og:description" content="Portfolio of Sameer Baskota, an Aerospace Engineering student at Pulchowk Campus (IOE, Tribhuvan University) building UAV-based crop health monitoring, computer vision, and precision agriculture systems.">
+  <meta property="og:image" content="https://sameerbaskota.com.np/images/og-image.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sameer Baskota — Aerospace Engineer · UAV & AI Researcher">
+  <meta name="twitter:description" content="Portfolio of Sameer Baskota, an Aerospace Engineering student at Pulchowk Campus (IOE, Tribhuvan University) building UAV-based crop health monitoring, computer vision, and precision agriculture systems.">
+  <meta name="twitter:image" content="https://sameerbaskota.com.np/images/og-image.png">
+
+  <meta name="theme-color" content="#F8F3E8">
+  <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="images/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+  <link rel="stylesheet" href="css/main.css">
+  
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Skip to content</a>
+  <div id="loader" aria-hidden="true">
+    <div class="loader-radar">
+      <div class="loader-radar-sweep"></div>
+      <div class="loader-radar-dot"></div>
+    </div>
+    <p class="loader-text">Initializing systems<span class="dots"></span></p>
+    <div class="loader-bar"></div>
+  </div>
+  <div id="scroll-progress"></div>
+  <div id="spotlight"></div>
+  <header class="site-header">
+    <div class="container">
+      <a href="index.html" class="brand">
+        <svg class="brand-mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.3"/><line x1="9.4" y1="9.4" x2="4" y2="4"/><line x1="14.6" y1="9.4" x2="20" y2="4"/><line x1="9.4" y1="14.6" x2="4" y2="20"/><line x1="14.6" y1="14.6" x2="20" y2="20"/><circle cx="4" cy="4" r="2.1"/><circle cx="20" cy="4" r="2.1"/><circle cx="4" cy="20" r="2.1"/><circle cx="20" cy="20" r="2.1"/></svg>
+        <span>S<span class="brand-b">B</span></span>
+        <span class="brand-tag">/ AEROSPACE &middot; UAV</span>
+      </a>
+
+      <nav class="main-nav" aria-label="Primary">
+        <ul class="main-nav-list">
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="about.html" class="">About</a></li>
+          <li><a href="projects.html" class="">Projects</a></li>
+          <li><a href="skills.html" class="">Skills</a></li>
+          <li><a href="experience.html" class="">Experience</a></li>
+          
+          <li><a href="contact.html" class="">Contact</a></li>
+        </ul>
+      </nav>
+
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch to light theme" aria-pressed="false">
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="5.9" y2="5.9"/><line x1="18.1" y1="18.1" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.9" y2="18.1"/><line x1="18.1" y1="5.9" x2="19.8" y2="4.2"/></svg>
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+      </button>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <div class="mobile-nav" id="mobile-nav">
+    <ul>
+      <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="about.html" class="">About</a></li>
+          <li><a href="projects.html" class="">Projects</a></li>
+          <li><a href="skills.html" class="">Skills</a></li>
+          <li><a href="experience.html" class="">Experience</a></li>
+          
+          <li><a href="contact.html" class="">Contact</a></li>
+      <li class="mobile-theme-row">
+        <button class="theme-toggle theme-toggle--mobile" type="button" aria-label="Switch to light theme" aria-pressed="false">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><line x1="12" y1="1.5" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22.5"/><line x1="4.2" y1="4.2" x2="5.9" y2="5.9"/><line x1="18.1" y1="18.1" x2="19.8" y2="19.8"/><line x1="1.5" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="22.5" y2="12"/><line x1="4.2" y1="19.8" x2="5.9" y2="18.1"/><line x1="18.1" y1="5.9" x2="19.8" y2="4.2"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8z"/></svg>
+          <span class="theme-toggle-label">Switch to light mode</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <main id="main-content">
+    <section class="hero hud-grid">
+      <div class="hero-bg">
+        <div class="hero-bg-gradient"></div>
+        <div class="hero-radar" data-parallax="0.06">
+          <div class="ring ring--1"></div>
+          <div class="ring ring--2"></div>
+          <div class="ring ring--3"></div>
+          <div class="ring ring--4"></div>
+          <div class="sweep"></div>
+        </div>
+        <div class="hero-glow" data-parallax="0.03"></div>
+        <svg class="hero-flightpath" viewBox="0 0 1000 400" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M -20 350 C 220 250, 380 380, 520 220 S 820 60, 1020 120" stroke="#D07A3F" stroke-opacity="0.5" stroke-width="1.5" fill="none"/>
+        <circle cx="1020" cy="120" r="3" fill="#8DB4E0"/>
+      </svg>
+      </div>
+
+      <div class="container">
+        <div class="hero-content">
+          <div>
+            <span class="hero-badge reveal">
+              <span class="pulse"></span>
+              <span class="eyebrow">Open to research &amp; graduate opportunities</span>
+            </span>
+
+            <h1 class="reveal reveal-delay-1">Sameer Baskota</h2>
+
+            <p class="hero-role reveal reveal-delay-1">
+              Aerospace Engineering Student <span class="sep">|</span> UAV &amp; AI Enthusiast
+            </p>
+
+            <p class="hero-typewriter reveal reveal-delay-2" id="typewriter" aria-live="polite"></p>
+
+            <p class="hero-desc reveal reveal-delay-2">
+              I'm an aerospace engineering graduate with an interest in aerospace systems, UAVs, AI, and computer vision. I like learning new things, working on technical projects, and finding practical ways to use engineering and technology to solve problems in different fields.
+            </p>
+
+            <div class="hero-cta reveal reveal-delay-3">
+              <a href="projects.html" class="btn btn--primary">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h6l2 2h10v11H3z"/></svg>
+                View Projects
+              </a>
+              <a href="about.html" class="btn btn--ghost">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="12" y1="16" x2="12" y2="11.5"/><circle cx="12" cy="8" r="0.5" fill="currentColor" stroke="none"/></svg>
+                About Me
+              </a>
+              <a href="assets/Sameer_Baskota_CV.pdf" download class="btn btn--ghost">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12"/><polyline points="7 12 12 17 17 12"/><line x1="5" y1="21" x2="19" y2="21"/></svg>
+                Download CV
+              </a>
+            </div>
+
+            <div class="hero-topics reveal reveal-delay-4">
+              <span class="topic-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="2.5"/><circle cx="4" cy="6" r="1.6"/><circle cx="20" cy="6" r="1.6"/><circle cx="4" cy="18" r="1.6"/><circle cx="20" cy="18" r="1.6"/><line x1="6" y1="7" x2="10.3" y2="10.5"/><line x1="18" y1="7" x2="13.7" y2="10.5"/><line x1="6" y1="17" x2="10.3" y2="13.5"/><line x1="18" y1="17" x2="13.7" y2="13.5"/></svg> AI &amp; Machine Learning</span>
+              <span class="topic-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3l7 18-7-4-7 4 7-18z"/></svg> UAV / Drone Technology</span>
+              <span class="topic-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg> Computer Vision</span>
+              <span class="topic-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 20h10"/><path d="M12 20V11"/><path d="M12 11C12 7.5 9.5 5 6 5c0 3.5 2.5 6 6 6z"/><path d="M12 11c0-4 3-7 7-7 0 4-3 7-7 7z"/></svg> </span>
+              <span class="topic-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg> Drone Mapping &amp; Remote Sensing</span>
+              <span class="topic-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="6" y="6" width="12" height="12" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="12" y1="1" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="23"/><line x1="1" y1="12" x2="4" y2="12"/><line x1="20" y1="12" x2="23" y2="12"/></svg> Aerospace Engineering</span>
+            </div>
+          </div>
+
+          <div class="hero-portrait-wrap reveal reveal-delay-2">
+            <div class="hero-portrait-glow"></div>
+            <div class="hero-frame-outline"></div>
+            <div class="hero-portrait corner-frame">
+              <img src="images/portrait.jpg" alt="Portrait of Sameer Baskota" width="420" height="525">
+              <div class="portrait-shade"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a href="#highlights" class="scroll-cue" aria-label="Scroll down">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      </a>
+    </section>
+
+    <section></section> 
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-name">Sameer Baskota</div>
+          <div class="footer-title">Aerospace Engineering Graduate &middot; UAV &amp; AI Researcher</div>
+          <p class="footer-tagline">
+            Exploring new ideas in aerospace engineering, UAV systems, and artificial intelligence through research and hands-on projects.
+          </p>
+        </div>
+
+        <div class="footer-contact">
+          <div class="footer-col-heading">Contact</div>
+          <div class="footer-list">
+            <a href="mailto:sameerbaskota821@gmail.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3 7 12 13 21 7"/></svg>
+              sameerbaskota821@gmail.com
+            </a>
+            <a href="tel:+9779864758824">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+              +977-9864758824
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links">
+          <div class="footer-col-heading">Elsewhere</div>
+          <div class="footer-list">
+            <a href="https://github.com/sameerbaskota" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C7.5 2.8 6.4 3.1 6.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 5 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg>
+              GitHub
+            </a>
+            <a href="https://linkedin.com/in/sameerbaskota21/" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="8" y1="11" x2="8" y2="16"/><line x1="8" y1="8" x2="8" y2="8.01"/><path d="M12 16v-3a2 2 0 0 1 4 0v3"/><line x1="12" y1="11" x2="12" y2="16"/></svg>
+              LinkedIn
+            </a>
+            <a href="https://sameerbaskota.com.np" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><line x1="3" y1="12" x2="21" y2="12"/><path d="M12 3a14.5 14.5 0 0 1 0 18 14.5 14.5 0 0 1 0-18z"/></svg>
+              sameerbaskota.com.np
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; <span id="year">2026</span> Sameer Baskota. All rights reserved.</span>
+        <span>27.6825&deg; N, 85.3170&deg; E &middot; Lalitpur, Nepal</span>
+      </div>
+    </div>
+  </footer>
+
+  <button id="back-to-top" aria-label="Back to top">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+
+  <script src="js/main.js"></script>
+  <script>document.getElementById("year").textContent = new Date().getFullYear();</script>
+</body>
+</html>

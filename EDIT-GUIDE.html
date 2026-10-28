@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How to edit your website — simple guide</title>
+<style>
+:root{--bg:#F8F3E8;--ink:#1B2733;--muted:#5A4F45;--acc:#12355B;--card:#fff;--line:#E2D6C3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:18px/1.7 Georgia,'Times New Roman',serif}
+.wrap{max-width:860px;margin:0 auto;padding:36px 22px 90px}
+h1{font-size:2.2rem;line-height:1.2;margin:0 0 8px}
+h2{font-size:1.6rem;margin:56px 0 8px;padding-top:20px;border-top:2px solid var(--line);color:var(--acc)}
+h3{font-size:1.2rem;margin:26px 0 6px}
+p,li{color:var(--ink)}
+.lede{color:var(--muted);font-size:1.1rem}
+.box{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--acc);border-radius:8px;padding:14px 18px;margin:18px 0}
+.warn{border-left-color:#B45309;background:#FFF6EC}
+.code{position:relative;margin:14px 0}
+.code pre{margin:0;background:#1B2733;color:#F8F3E8;border-radius:8px;padding:16px;overflow:auto;font:14px/1.55 Consolas,'Courier New',monospace;white-space:pre}
+.copy{position:absolute;top:8px;right:8px;background:var(--acc);color:#fff;border:0;border-radius:6px;padding:5px 12px;font:600 13px Arial,sans-serif;cursor:pointer}
+code{background:#EFE7D6;padding:1px 6px;border-radius:4px;font:0.88em Consolas,monospace}
+table{border-collapse:collapse;width:100%;background:var(--card);margin:14px 0}
+td,th{border:1px solid var(--line);padding:9px 12px;text-align:left;vertical-align:top;font-size:16px}
+th{background:#EFE7D6}
+.toc a{color:var(--acc)}
+.toc li{margin:2px 0}
+.step{counter-increment:s}
+.step::before{content:counter(s);display:inline-block;width:26px;height:26px;line-height:26px;text-align:center;background:var(--acc);color:#fff;border-radius:50%;font:700 14px Arial;margin-right:8px}
+ol.steps{list-style:none;padding-left:0;counter-reset:s}
+ol.steps li{margin:12px 0}
+</style></head><body><div class="wrap">
+
+<h1>How to edit your website</h1>
+<p class="lede">A simple manual for someone with zero coding experience. You only need to copy, paste and change words. No programming knowledge.</p>
+
+<ol class="toc" style="padding-left:24px">
+<li><a href="#s0">Before you start</a></li>
+<li><a href="#s1">Which file is which page?</a></li>
+<li><a href="#s2">Change words that already exist</a></li>
+<li><a href="#s3">Add a new experience</a></li>
+<li><a href="#s4">Add a new project</a></li>
+<li><a href="#s5b">Add your report (PDF) to a project</a></li>
+<li><a href="#s5">Hide or delete something</a></li>
+<li><a href="#s6">Change your photo, CV or contact details</a></li>
+<li><a href="#sk">Add or change a skill</a></li>
+<li><a href="#xc">Add extracurricular, training, awards</a></li>
+<li><a href="#s7">Add photos to the Gallery</a></li>
+<li><a href="#s8">Put the changes on the internet</a></li>
+<li><a href="#s9">If something breaks</a></li>
+</ol>
+
+<h2 id="s0">1. Before you start</h2>
+<h3>What you need</h3>
+<p>A free program called <b>Visual Studio Code</b> (search "VS Code download"). It shows your files in colour and makes finding text easy. Windows Notepad also works, but VS Code is much easier.</p>
+<p>To open your site: install VS Code, then <b>File &rarr; Open Folder</b> and choose the <code>vanilla-portfolio</code> folder. Your files appear on the left.</p>
+
+<div class="box"><b>Rule 1: Make a backup.</b> Copy the whole <code>vanilla-portfolio</code> folder and paste it somewhere else (name it <code>backup</code>). If you break something, copy the files back.</div>
+<div class="box"><b>Rule 2: Extract the zip first.</b> Never open the website from inside the zip file. Right-click the zip &rarr; <b>Extract All</b>.</div>
+<div class="box"><b>Rule 3: See your change.</b> After editing, press <b>Ctrl + S</b> to save. Then go to your browser (open <code>index.html</code>) and press <b>Ctrl + F5</b> to refresh. If the change is not there, you probably edited a different file than you thought.</div>
+
+<h3>Tricks you will use all the time</h3>
+<table>
+<tr><th>Press</th><th>What it does</th></tr>
+<tr><td><b>Ctrl + F</b></td><td>Search for a word in the current file. Great for finding the text you want to change.</td></tr>
+<tr><td><b>Ctrl + Shift + F</b></td><td>Search in ALL files. Useful for your email or phone number.</td></tr>
+<tr><td><b>Ctrl + S</b></td><td>Save.</td></tr>
+<tr><td><b>Ctrl + Z</b></td><td>Undo your last mistake. Press several times to go back more.</td></tr>
+<tr><td><b>Ctrl + C / Ctrl + V</b></td><td>Copy / paste.</td></tr>
+</table>
+
+<h2 id="s1">2. Which file is which page?</h2>
+<table>
+<tr><th>Open this file</th><th>To edit this page</th></tr>
+<tr><td><code>index.html</code></td><td>Home page</td></tr>
+<tr><td><code>about.html</code></td><td>About page</td></tr>
+<tr><td><code>projects.html</code></td><td>Projects page</td></tr>
+<tr><td><code>skills.html</code></td><td>Skills page</td></tr>
+<tr><td><code>experience.html</code></td><td>Experience page</td></tr>
+<tr><td><code>gallery.html</code> and <code>js/gallery.js</code></td><td>Gallery page (the photo list is in <code>js/gallery.js</code>)</td></tr>
+<tr><td><code>contact.html</code></td><td>Contact page</td></tr>
+<tr><td><code>css/base.css</code></td><td>Main colours of the whole site</td></tr>
+<tr><td><code>images/</code></td><td>Your pictures</td></tr>
+<tr><td><code>assets/</code></td><td>Your CV (PDF)</td></tr>
+</table>
+
+<h2 id="s2">3. Change words that already exist</h2>
+<p>Website files are mostly your normal text with little codes in <b>&lt; &gt;</b> brackets around it. The golden rule:</p>
+<div class="box"><b>Only change the words that are between &gt; and &lt;. Never delete or change the &lt; &gt; symbols or the words inside them.</b></div>
+<ol class="steps">
+<li class="step">Open the page file (for example <code>experience.html</code>).</li>
+<li class="step">Press <b>Ctrl + F</b> and type a few words from the text you want to change.</li>
+<li class="step">Click into the text, change the words, keep everything in &lt; &gt; as it is.</li>
+<li class="step">Ctrl + S, then refresh the browser.</li>
+</ol>
+<p><b>Example.</b> Before:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;h3&gt;Internship &amp;mdash; AMO (Approved Maintenance Organization)&lt;/h3&gt;</pre></div>
+<p>After (only the words changed, the <code>&lt;h3&gt;</code> and <code>&lt;/h3&gt;</code> stay):</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;h3&gt;Internship &amp;mdash; Approved Maintenance Organization&lt;/h3&gt;</pre></div>
+
+<h3>Special letters</h3>
+<p>If you type these directly the site may show them wrongly, so write them like this:</p>
+<table>
+<tr><th>You want</th><th>Type this</th></tr>
+<tr><td>&amp; (and sign)</td><td><code>&amp;amp;</code></td></tr>
+<tr><td>&mdash; (long dash)</td><td><code>&amp;mdash;</code></td></tr>
+<tr><td>&ndash; (short dash, for date ranges)</td><td><code>&amp;ndash;</code></td></tr>
+<tr><td>&middot; (middle dot)</td><td><code>&amp;middot;</code></td></tr>
+<tr><td>&lt; or &gt; in your text</td><td><code>&amp;lt;</code> or <code>&amp;gt;</code></td></tr>
+</table>
+<p>A normal apostrophe like <code>don't</code> is fine.</p>
+
+<h2 id="s3">4. Add a new experience</h2>
+<p>An experience is one box on the Experience page. You add a new one by <b>copying a ready-made block</b> and pasting it in the right place.</p>
+<ol class="steps">
+<li class="step">Open <code>experience.html</code> in VS Code.</li>
+<li class="step">Press <b>Ctrl + F</b> and search for <code>NEW EXPERIENCE GOES HERE</code>. You will find a note (a comment) I left for you.</li>
+<li class="step">Click on the <b>empty line just under that note</b>.</li>
+<li class="step">Click <b>Copy</b> on the block below, then press <b>Ctrl + V</b> to paste.</li>
+<li class="step">Change the words that say YOUR JOB TITLE HERE, the dates, the company, headings and bullet points.</li>
+<li class="step">Ctrl + S, refresh the browser. Your new job appears at the top (newest first).</li>
+</ol>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;div class=&quot;timeline-item reveal&quot;&gt;
+  &lt;span class=&quot;timeline-dot&quot;&gt;&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.75&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;rect x=&quot;3&quot; y=&quot;7&quot; width=&quot;18&quot; height=&quot;13&quot; rx=&quot;2&quot;/&gt;&lt;path d=&quot;M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2&quot;/&gt;&lt;line x1=&quot;3&quot; y1=&quot;13&quot; x2=&quot;21&quot; y2=&quot;13&quot;/&gt;&lt;/svg&gt;&lt;/span&gt;
+  &lt;div class=&quot;glass-panel corner-frame timeline-card&quot;&gt;
+    &lt;div class=&quot;timeline-top&quot;&gt;
+      &lt;h3&gt;YOUR JOB TITLE HERE&lt;/h3&gt;
+      &lt;span class=&quot;timeline-period&quot;&gt;Mar 2026 &amp;ndash; Present&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;p class=&quot;timeline-org&quot;&gt;Company Name &lt;span class=&quot;loc&quot;&gt;&amp;middot; City, Country&lt;/span&gt;&lt;/p&gt;
+
+    &lt;div class=&quot;project-subhead&quot; style=&quot;margin-top:18px;&quot;&gt;First Heading&lt;/div&gt;
+    &lt;ul class=&quot;timeline-points&quot;&gt;
+      &lt;li&gt;What you did, point one&lt;/li&gt;
+      &lt;li&gt;What you did, point two&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;div class=&quot;project-subhead&quot;&gt;Second Heading&lt;/div&gt;
+    &lt;ul class=&quot;timeline-points&quot;&gt;
+      &lt;li&gt;Another thing you did&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</pre></div>
+<h3>Small things you may want</h3>
+<ul>
+<li><b>More bullet points:</b> copy one whole line <code>&lt;li&gt;...&lt;/li&gt;</code> and paste it below itself, then change the words.</li>
+<li><b>More headings:</b> copy a heading line plus its list (the <code>&lt;div class="project-subhead"&gt;</code> line and the <code>&lt;ul&gt;...&lt;/ul&gt;</code> under it) and paste it below.</li>
+<li><b>No headings needed?</b> Delete the heading lines and keep one <code>&lt;ul&gt;</code> list.</li>
+</ul>
+<div class="box warn"><b>Careful:</b> paste the whole block, from the first <code>&lt;div</code> to the last <code>&lt;/div&gt;</code>. Pasting only half is the number one reason pages break.</div>
+
+<h2 id="s4">5. Add a new project</h2>
+<p>You have two choices:</p>
+<table>
+<tr><th>Type</th><th>Where it appears</th><th>Difficulty</th></tr>
+<tr><td><b>A. Small project card</b></td><td>"Other Projects" section. A short card with 2 to 4 bullets.</td><td>Easy. Start here.</td></tr>
+<tr><td><b>B. Big card with "Read More"</b></td><td>Top section. A card that opens a full pop-up with details.</td><td>Medium. Two pastes that must match.</td></tr>
+</table>
+
+<h3>A. Small project card</h3>
+<ol class="steps">
+<li class="step">Open <code>projects.html</code>.</li>
+<li class="step">Ctrl + F, search <code>NEW SMALL PROJECT GOES HERE</code>.</li>
+<li class="step">Click the empty line under that note and paste this block.</li>
+<li class="step">Change the title, date, tools and bullets. Save, refresh.</li>
+</ol>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;div class=&quot;glass-panel corner-frame mini-project-card reveal&quot;&gt;
+  &lt;div class=&quot;mini-thumb&quot;&gt;
+    &lt;span class=&quot;status-chip status-chip--done&quot;&gt;Completed&lt;/span&gt;
+    &lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.6&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;rect x=&quot;2&quot; y=&quot;7&quot; width=&quot;20&quot; height=&quot;14&quot; rx=&quot;2&quot;/&gt;&lt;circle cx=&quot;12&quot; cy=&quot;14&quot; r=&quot;3.5&quot;/&gt;&lt;/svg&gt;
+  &lt;/div&gt;
+  &lt;h3&gt;YOUR PROJECT NAME&lt;/h3&gt;
+  &lt;p class=&quot;mini-project-tools&quot;&gt;Month Year &amp;middot; Tools you used&lt;/p&gt;
+  &lt;ul&gt;
+    &lt;li&gt;What the project did, point one&lt;/li&gt;
+    &lt;li&gt;What the project did, point two&lt;/li&gt;
+    &lt;li&gt;What the project did, point three&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre></div>
+<p><b>The coloured label</b> (the "Completed" chip) can be changed:</p>
+<table>
+<tr><th>Write this</th><th>Shows</th></tr>
+<tr><td><code>status-chip--done</code> then the word Completed</td><td>Completed</td></tr>
+<tr><td><code>status-chip--ongoing</code> then the word Ongoing</td><td>Ongoing, with a pulsing dot</td></tr>
+<tr><td><code>status-chip--concept</code> then the word Concept Study</td><td>Concept</td></tr>
+</table>
+<p>When you change the style, change the word as well, for example <code>&lt;span class="status-chip status-chip--ongoing"&gt;Ongoing&lt;/span&gt;</code>.</p>
+
+<h3>B. Big card with a "Read More" pop-up</h3>
+<p>This needs <b>two blocks</b> linked by a secret name. In my example the name is <code>modal-my-new-project</code>. It must be <b>exactly the same</b> in both blocks, with no spaces and no capital letters. For a second project use another name like <code>modal-drone-mapping</code>.</p>
+<ol class="steps">
+<li class="step"><b>Block 1, the card.</b> Open <code>projects.html</code>. Find <code>research-cards-grid</code> (Ctrl + F). Under it you will see three <code>&lt;article ...&gt;</code> blocks. Paste the card below after the last <code>&lt;/article&gt;</code> (and before the next closing <code>&lt;/div&gt;</code>).</li>
+<li class="step"><b>Block 2, the pop-up.</b> Search <code>NEW "READ MORE" POP-UP</code> and paste the pop-up block on the empty line <b>above</b> that note.</li>
+<li class="step">Change <code>modal-my-new-project</code> to your own name in <b>both</b> blocks (the card says <code>data-modal-target="..."</code>, the pop-up says <code>id="..."</code>).</li>
+<li class="step">Fill in your words, save, refresh, click Read More to test.</li>
+</ol>
+<p><b>Block 1, the card:</b></p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;article class=&quot;glass-panel corner-frame research-card reveal&quot;&gt;
+  &lt;div class=&quot;research-card-media thumb-placeholder&quot;&gt;
+    &lt;span class=&quot;status-chip status-chip--done&quot;&gt;Completed&lt;/span&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;research-card-body&quot;&gt;
+    &lt;span class=&quot;eyebrow-pill&quot;&gt;Project Type&lt;/span&gt;
+    &lt;h3&gt;YOUR PROJECT NAME&lt;/h3&gt;
+    &lt;p class=&quot;research-card-desc&quot;&gt;
+      Two or three sentences that explain the project.
+    &lt;/p&gt;
+    &lt;div class=&quot;tag-row&quot;&gt;
+      &lt;span class=&quot;tag&quot;&gt;Tool One&lt;/span&gt;
+      &lt;span class=&quot;tag&quot;&gt;Tool Two&lt;/span&gt;
+    &lt;/div&gt;
+    &lt;button type=&quot;button&quot; class=&quot;read-more-btn&quot; data-modal-target=&quot;modal-my-new-project&quot;&gt;
+      Read More
+    &lt;/button&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</pre></div>
+<p><b>Block 2, the pop-up</b> (opens full screen, and already includes a report box at the end):</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;template id=&quot;modal-my-new-project&quot;&gt;
+  &lt;span class=&quot;eyebrow-pill&quot;&gt;Project Type&lt;/span&gt;
+  &lt;h2&gt;YOUR PROJECT NAME&lt;/h2&gt;
+  &lt;p class=&quot;featured-meta&quot;&gt;Where and when &amp;middot; Month Year&lt;/p&gt;
+
+  &lt;div class=&quot;project-subhead&quot;&gt;Objective&lt;/div&gt;
+  &lt;p class=&quot;project-body-text&quot;&gt;
+    Write what the project was trying to achieve.
+  &lt;/p&gt;
+
+  &lt;div class=&quot;project-subhead&quot;&gt;Methodology&lt;/div&gt;
+  &lt;p class=&quot;project-body-text&quot;&gt;
+    Write how you did it.
+  &lt;/p&gt;
+
+  &lt;div class=&quot;project-subhead&quot;&gt;Tools Used&lt;/div&gt;
+  &lt;div class=&quot;tag-row featured-tags&quot;&gt;
+    &lt;span class=&quot;tag&quot;&gt;Tool One&lt;/span&gt;
+    &lt;span class=&quot;tag&quot;&gt;Tool Two&lt;/span&gt;
+  &lt;/div&gt;
+
+  &lt;div class=&quot;project-subhead&quot;&gt;Results&lt;/div&gt;
+  &lt;p class=&quot;project-body-text&quot;&gt;
+    Write what you found or achieved.
+  &lt;/p&gt;
+
+
+&lt;div class=&quot;project-subhead&quot;&gt;Report&lt;/div&gt;
+&lt;div class=&quot;report-box&quot;&gt;
+  &lt;div class=&quot;report-info&quot;&gt;
+    &lt;span class=&quot;report-icon&quot;&gt;&lt;!-- keep the small icon from the other projects --&gt;&lt;/span&gt;
+    &lt;div&gt;
+      &lt;strong&gt;Full project report (PDF)&lt;/strong&gt;
+      &lt;span class=&quot;report-note&quot;&gt;The complete write-up: methods, results and references.&lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&quot;report-actions&quot;&gt;
+    &lt;a href=&quot;assets/reports/my-new-project-report.pdf&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot; class=&quot;btn btn--primary&quot;&gt;View report&lt;/a&gt;
+    &lt;a href=&quot;assets/reports/my-new-project-report.pdf&quot; download class=&quot;btn btn--ghost&quot;&gt;Download&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;/template&gt;</pre></div>
+<div class="box">The card's picture area shows an empty box for now. The three current big cards also show a picture placeholder, so photos on cards are not added yet. Tell me when you want real photos on them and I will set that up for you.</div>
+
+<h2 id="s5b">6. Add your report (PDF) to a project</h2>
+<p>Each of your three big projects now has a <b>Report</b> box at the bottom of its full-screen view, with <b>View report</b> and <b>Download</b> buttons. Today those buttons open a small placeholder PDF so nothing is broken.</p>
+<ol class="steps">
+<li class="step">Export your report as a PDF.</li>
+<li class="step">Rename it to <b>exactly</b> the same name as the placeholder you are replacing: <code>crop-health-report.pdf</code>, <code>research-paper-report.pdf</code> or <code>aerombulance-report.pdf</code>.</li>
+<li class="step">Put it in the folder <code>assets/reports</code> and choose <b>Replace</b> when Windows asks. That is all. No code to change.</li>
+</ol>
+<p><b>For a new project:</b> save the PDF in <code>assets/reports</code>, then in your new pop-up block change <code>my-new-project-report.pdf</code> to your file name (in both places). The pop-up block in section 5 already includes the report box at the end.</p>
+<div class="box warn">Use simple file names: no spaces, no capital-letter surprises. <code>my-report.pdf</code> is good, <code>My Report (final).pdf</code> will cause trouble.</div>
+
+<h2 id="s5">7. Hide or delete something</h2>
+<div class="box"><b>Safest way: hide it instead of deleting.</b> Put <code>&lt;!--</code> on a line before the block and <code>--&gt;</code> on a line after the block. The block disappears from the website but stays in the file. Remove those two marks to bring it back.</div>
+<p>VS Code shortcut: select the lines you want to hide and press <b>Ctrl + /</b>. Press the same keys again to bring them back.</p>
+<p>To delete for real, select <b>the whole block</b> from its first <code>&lt;div</code> or <code>&lt;article</code> down to its matching closing tag, and press Delete. If unsure, hide it first, check the page, and delete later.</p>
+
+<h2 id="s6">8. Change your photo, CV or contact details</h2>
+<h3>Your portrait photo</h3>
+<p>Prepare your new photo, name it <code>portrait.jpg</code>, and put it in the <code>images</code> folder. Replace the old file with the same name. Nothing else to change.</p>
+<h3>Your CV</h3>
+<p>Name the new PDF <code>Sameer_Baskota_CV.pdf</code> and replace the file inside the <code>assets</code> folder.</p>
+<h3>Email, phone, LinkedIn, GitHub</h3>
+<p>These appear on several pages (the footer is on every page). Change them everywhere at once:</p>
+<ol class="steps">
+<li class="step">In VS Code press <b>Ctrl + Shift + H</b> (this is "Replace in Files").</li>
+<li class="step">In the first box type the old one (for example <code>sameerbaskota821@gmail.com</code>).</li>
+<li class="step">In the second box type the new one.</li>
+<li class="step">Click the "Replace All" button and save.</li>
+</ol>
+<p>The same trick works for a phone number or any word you want to change on all pages.</p>
+
+<h3>Colours of the site</h3>
+<p>Open <code>css/base.css</code>. Near the top there are two groups of colour lines: the first group (under <code>:root</code>) is the <b>dark</b> theme, the second group (under <code>[data-theme='light']</code>) is the <b>light</b> theme. Change the code after the <code>#</code> and save. Every page updates. Search "hex color picker" on Google to get colour codes.</p>
+<table>
+<tr><th>Line in the file</th><th>What it colours</th><th>Light theme now</th></tr>
+<tr><td><code>--bg-void</code></td><td>Page background</td><td>#F8F3E8 (light cream)</td></tr>
+<tr><td><code>--bg-surface</code></td><td>Cards</td><td>#FFFDF8</td></tr>
+<tr><td><code>--cyan</code></td><td>Main colour: links, buttons, labels, borders</td><td>#12355B (navy)</td></tr>
+<tr><td><code>--green</code></td><td>Small accent: dots, tags, highlights</td><td>#C8692E (copper)</td></tr>
+<tr><td><code>--ink</code></td><td>Main text</td><td>#1B2733</td></tr>
+<tr><td><code>--ink-muted</code></td><td>Softer text</td><td>#4A5A6B</td></tr>
+</table>
+<div class="box warn"><b>Careful:</b> some lines have a matching "rgb" partner, for example <code>--cyan</code> and <code>--cyan-rgb: 18, 53, 91;</code> (the same colour written as three numbers). If you change one, change its partner too. For a quick safe change, edit only <code>--bg-void</code> (background) and <code>--cyan</code> plus <code>--cyan-rgb</code> (main colour).</div>
+
+<h2 id="sk">9. Add or change a skill</h2>
+<p>Open <code>skills.html</code>. Skills are small pill labels inside cards. To <b>add a skill</b>, find the card it belongs to (press Ctrl + F and search a skill you already have, for example <code>Python</code>), then copy one pill line and paste it on the line below:</p>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;span class="tag"&gt;Your New Skill&lt;/span&gt;</pre></div>
+<p>To <b>remove</b> a skill, delete that one line. To <b>rename</b> it, change the words between <code>&gt;</code> and <code>&lt;</code>. The small count text under a card title (like "2 languages") is typed by hand, so update it yourself.</p>
+
+<h2 id="xc">10. Add extracurricular, training, awards</h2>
+<p>These live on the <b>About</b> page, in small cards near the bottom: "Training &amp; Certifications" and "Extracurricular Activities". Open <code>about.html</code> in VS Code. You can add a single bullet to an existing card, or add a brand new card.</p>
+
+<h3>A. Add one bullet to an existing card</h3>
+<ol class="steps">
+<li class="step">Open <code>about.html</code> and press <b>Ctrl + F</b>.</li>
+<li class="step">Search <code>NEW EXTRACURRICULAR ITEM GOES HERE</code> (or <code>NEW TRAINING / CERTIFICATE GOES HERE</code> for certificates and courses).</li>
+<li class="step">Click the empty line under that note and paste this line. Change the words.</li>
+<li class="step">Ctrl + S. The new bullet appears on the page.</li>
+</ol>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;li&gt;&lt;strong&gt;Name of club, event or course&lt;/strong&gt; &amp;mdash; one sentence about what you did or learned&lt;/li&gt;</pre></div>
+<p>The <code>&lt;strong&gt;...&lt;/strong&gt;</code> part makes the name bold. You can remove those tags if you don't want bold text.</p>
+
+<h3>B. Add a brand new card (Awards, Volunteering, Publications, Leadership...)</h3>
+<ol class="steps">
+<li class="step">In <code>about.html</code>, search <code>NEW CARD</code>.</li>
+<li class="step">Click the empty line under that note and paste the whole card below.</li>
+<li class="step">Change the heading (<code>Awards &amp;amp; Achievements</code>) and the bullet lines. Write <code>&amp;amp;</code> if you need the "&amp;" sign.</li>
+<li class="step">Ctrl + S and refresh. The new card appears next to the others.</li>
+</ol>
+<div class="code"><button class="copy" type="button">Copy</button><pre>&lt;div class=&quot;glass-panel corner-frame credentials-card reveal&quot;&gt;
+  &lt;div class=&quot;credentials-card-head&quot;&gt;
+    &lt;div class=&quot;skill-icon&quot;&gt;&lt;svg viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.75&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot;&gt;&lt;circle cx=&quot;12&quot; cy=&quot;8&quot; r=&quot;6&quot;/&gt;&lt;path d=&quot;M15.477 12.89 17 22l-5-3-5 3 1.523-9.11&quot;/&gt;&lt;/svg&gt;&lt;/div&gt;
+    &lt;h3&gt;Awards &amp;amp; Achievements&lt;/h3&gt;
+  &lt;/div&gt;
+  &lt;ul class=&quot;dot-list&quot;&gt;
+    &lt;li&gt;&lt;strong&gt;Award or achievement name&lt;/strong&gt; &amp;mdash; where and when&lt;/li&gt;
+    &lt;li&gt;Another item&lt;/li&gt;
+  &lt;/ul&gt;
+&lt;/div&gt;</pre></div>
+<div class="box warn">Paste the whole card, from the first <code>&lt;div</code> to the last <code>&lt;/div&gt;</code>. Cards sit in two columns on a big screen, so three cards will wrap to a second row. That is normal.</div>
+
+<h3>Quick table: what to add and where</h3>
+<table>
+<tr><th>You want to add</th><th>Where</th><th>Section of this guide</th></tr>
+<tr><td>A job, internship or lab role</td><td><code>experience.html</code> (search <code>NEW EXPERIENCE GOES HERE</code>)</td><td>Add a new experience</td></tr>
+<tr><td>A project</td><td><code>projects.html</code> (search <code>NEW SMALL PROJECT GOES HERE</code>)</td><td>Add a new project</td></tr>
+<tr><td>A project report (PDF)</td><td><code>assets/reports</code> folder</td><td>Add your report</td></tr>
+<tr><td>Club, event, volunteering</td><td><code>about.html</code> (search <code>NEW EXTRACURRICULAR ITEM</code>)</td><td>This section</td></tr>
+<tr><td>Course, training, certificate</td><td><code>about.html</code> (search <code>NEW TRAINING</code>)</td><td>This section</td></tr>
+<tr><td>Award, publication, leadership card</td><td><code>about.html</code> (search <code>NEW CARD</code>)</td><td>This section</td></tr>
+<tr><td>A skill</td><td><code>skills.html</code></td><td>Add or change a skill</td></tr>
+<tr><td>A photo</td><td><code>js/gallery.js</code> + <code>images/gallery</code></td><td>Add photos to the Gallery</td></tr>
+</table>
+
+<h2 id="s7">11. Add photos to the Gallery</h2>
+<ol class="steps">
+<li class="step">Make your photo smaller than 500 KB if you can, and save it as <code>.jpg</code>.</li>
+<li class="step">Put it in the folder <code>images/gallery</code> and give it a simple name, for example <code>research-03.jpg</code> (no spaces).</li>
+<li class="step">Open <code>js/gallery.js</code>. Ctrl + F, search <code>NEW PHOTO GOES HERE</code>.</li>
+<li class="step">Click the empty line under that note and paste this line. Change the title, caption and file name.</li>
+</ol>
+<div class="code"><button class="copy" type="button">Copy</button><pre>{ category: &#x27;research&#x27;, title: &#x27;Short title of the photo&#x27;, caption: &#x27;One sentence about the photo.&#x27;, file: &#x27;research-03.jpg&#x27; },</pre></div>
+<p>Only change the words inside the quote marks <code>' '</code>. Keep the comma at the very end.</p>
+<p>The <code>category</code> must be one of these exact words:</p>
+<table>
+<tr><td><code>uav-missions</code></td><td><code>crop-health</code></td><td><code>research</code></td></tr>
+<tr><td><code>aircraft-design</code></td><td><code>internship</code></td><td><code>events</code></td></tr>
+<tr><td colspan="3"><code>personal-photography</code></td></tr>
+</table>
+<p>Until a photo with the matching file name is in <code>images/gallery</code>, the site shows a grey placeholder with the file name. Add the file and it replaces the placeholder automatically.</p>
+<div class="box warn">An apostrophe inside a caption (like <code>Sameer's</code>) will break the line. Write <code>Sameer\'s</code> with a backslash before it, or reword the sentence.</div>
+
+<h2 id="s8">12. Put the changes on the internet</h2>
+<p>Everything above changes the files on your computer only. To update the live website, upload the files you changed to the place where your site is hosted, replacing the old ones with the same names (keep the same folders).</p>
+<ul>
+<li>Changed text on a page: upload that one <code>.html</code> file.</li>
+<li>Added a photo: upload the new image file to the same folder.</li>
+<li>Changed colours or fonts: upload the file(s) in the <code>css</code> folder.</li>
+<li>Edited the gallery list: upload <code>js/gallery.js</code>.</li>
+</ul>
+<p>After uploading, open your site and press <b>Ctrl + F5</b> so the browser does not show the old version. How you upload depends on your hosting company (for example a file manager in their dashboard, or GitHub). If you tell me what you use, I can write the exact steps.</p>
+
+<h3>Before you put it online: checklist</h3>
+<ul>
+<li>Replace the placeholder PDFs in <code>assets/reports</code> with your real reports.</li>
+<li>Put your latest CV in <code>assets</code> with the name <code>Sameer_Baskota_CV.pdf</code>.</li>
+<li>The share-preview picture <code>images/og-image.png</code> still has old colours. Make a new one (1200 x 630 pixels) and keep the same file name.</li>
+<li>The contact <b>form</b> does not send messages yet (the email links work). It needs a form service. Ask me and I will connect it.</li>
+<li>Test on a phone: open the site on your phone, or in Edge press <b>F12</b> then <b>Ctrl + Shift + M</b> for the phone view.</li>
+<li>Click every menu link and every "Read More" once to make sure nothing is broken.</li>
+</ul>
+
+<h2 id="s9">13. If something breaks</h2>
+<ol class="steps">
+<li class="step">Press <b>Ctrl + Z</b> in VS Code several times until the page works again. Save and refresh.</li>
+<li class="step">Still broken? Copy your backup file over the broken one.</li>
+<li class="step">Page looks plain, white, or in the wrong style? You are probably opening a file from inside the zip. Extract all first.</li>
+<li class="step">Part of the page is missing or looks jumbled? Usually a <code>&lt;</code> or <code>&gt;</code> was deleted, or a block was pasted only halfway. Re-copy the block and paste it fresh.</li>
+<li class="step">Cannot fix it? Send me the file and say what you changed. I will find the problem.</li>
+</ol>
+
+<h3>Words you will see in the files</h3>
+<table>
+<tr><th>Code</th><th>What it is</th></tr>
+<tr><td><code>&lt;h2&gt; &lt;h3&gt;</code></td><td>A heading or title</td></tr>
+<tr><td><code>&lt;p&gt;</code></td><td>A paragraph of text</td></tr>
+<tr><td><code>&lt;li&gt;</code></td><td>One bullet point</td></tr>
+<tr><td><code>&lt;ul&gt;</code></td><td>A list of bullet points</td></tr>
+<tr><td><code>&lt;strong&gt;</code></td><td>Bold text</td></tr>
+<tr><td><code>&lt;span class="tag"&gt;</code></td><td>A small pill label such as "Python"</td></tr>
+<tr><td><code>&lt;div&gt;</code></td><td>A box that holds other things</td></tr>
+<tr><td><code>&lt;!-- ... --&gt;</code></td><td>A note for people. The website ignores it.</td></tr>
+</table>
+<p class="lede">Every opening tag like <code>&lt;li&gt;</code> must have its closing partner <code>&lt;/li&gt;</code>. If you keep the pairs together, you are safe.</p>
+
+</div>
+<script>
+document.querySelectorAll('.copy').forEach(function(b){
+  b.addEventListener('click',function(){
+    var t=b.parentNode.querySelector('pre').innerText;
+    var done=function(){b.textContent='Copied';setTimeout(function(){b.textContent='Copy'},1500)};
+    if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){})}
+    else{var r=document.createRange();r.selectNodeContents(b.parentNode.querySelector('pre'));var s=getSelection();s.removeAllRanges();s.addRange(r);document.execCommand('copy');done()}
+  });
+});
+</script>
+</body></html>
