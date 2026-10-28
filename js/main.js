@@ -318,13 +318,27 @@
         return;
       }
 
-      // No backend is wired up in this static build — this simply confirms
-      // the form is ready to be connected to an email service or endpoint.
+            var data = new URLSearchParams(new FormData(form));
       if (status) {
-        status.textContent = 'Message ready to send';
+        status.textContent = 'Sending...';
         status.classList.add('is-visible');
       }
-      form.reset();
+      fetch('https://script.google.com/macros/s/AKfycbz6CBVnOOkA_vzrRZkVAP869dCgDf4cnYHFz7XK3gsSeVwcpB-eMSC6sBdZAYKTQhMY/exec', {
+        method: 'POST',
+        mode: 'no-cors',
+        body: data
+      })
+        .then(function () {
+          if (status) {
+            status.textContent = 'Thank you! Your message has been sent.';
+          }
+          form.reset();
+        })
+        .catch(function () {
+          if (status) {
+            status.textContent = 'Something went wrong. Please email me directly.';
+          }
+        });
     });
   }
 
