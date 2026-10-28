@@ -1,0 +1,225 @@
+/* ==========================================================================
+   GALLERY — layered animation architecture
+   ========================================================================== */
+
+.gallery-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 22px;
+}
+@media (max-width: 1100px) {
+  .gallery-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 760px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+}
+@media (max-width: 460px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+}
+
+/* Layer 1 (outer) — scroll parallax. JS sets `transform: translateY()` here
+   via requestAnimationFrame, on its own layer so it never fights the
+   reveal-in transition or the hover tilt, which each own their own element. */
+.gallery-item {
+  will-change: transform;
+}
+
+/* Layer 2 — scroll-reveal (IntersectionObserver toggles .is-visible) and,
+   once settled, a gentle infinite float. The float only starts after the
+   reveal transition finishes (JS listens for transitionend and swaps a
+   class), so the two animations never collide on the same property. */
+.gallery-item-reveal {
+  opacity: 0;
+  transform: translateY(46px) scale(0.92) rotate(-1.6deg);
+  transition: opacity 0.85s cubic-bezier(0.16, 0.8, 0.24, 1),
+              transform 0.85s cubic-bezier(0.16, 0.8, 0.24, 1);
+}
+.gallery-item-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0) scale(1) rotate(0deg);
+}
+.gallery-item-reveal.is-floating {
+  animation: gallery-float 5.5s ease-in-out infinite;
+}
+@keyframes gallery-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* Layer 3 — hover/tap tilt + scale, driven by JS via CSS custom properties
+   so the return-to-rest transition is handled entirely by CSS (smooth,
+   no snapping) rather than animated frame-by-frame in JS. */
+.gallery-item-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --tilt-scale: 1;
+  position: relative;
+  border-radius: var(--radius-md);
+  transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) scale(var(--tilt-scale));
+  transition: transform 0.55s cubic-bezier(0.16, 0.8, 0.24, 1),
+              box-shadow 0.55s cubic-bezier(0.16, 0.8, 0.24, 1);
+  box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.5);
+  transform-style: preserve-3d;
+}
+.gallery-item-card.is-active {
+  box-shadow: 0 26px 60px -20px rgba(0, 0, 0, 0.55), 0 0 44px -12px var(--cyan-glow);
+}
+
+.gallery-item-media {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+}
+
+.gallery-placeholder-fill {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background:
+    linear-gradient(135deg, rgba(var(--cyan-rgb), 0.07) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(var(--cyan-rgb), 0.035) 0 2px, transparent 2px 11px);
+  color: var(--ink-faint);
+  transition: color 0.5s var(--ease);
+}
+.gallery-item-card.is-active .gallery-placeholder-fill {
+  color: var(--cyan);
+}
+.gallery-placeholder-fill svg {
+  width: 34px;
+  height: 34px;
+  opacity: 0.55;
+  transition: opacity 0.5s var(--ease), transform 0.55s cubic-bezier(0.16, 0.8, 0.24, 1);
+}
+.gallery-item-card.is-active .gallery-placeholder-fill svg {
+  opacity: 0.9;
+  transform: scale(1.06);
+}
+
+/* Data-acquisition scan line — a thin gradient sweep unique to this site,
+   evoking a push-broom / line-scan sensor pass rather than the radar rings
+   used elsewhere. Triggered only on hover/tap, one pass, then fades. */
+.gallery-scan {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -2px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan) 45%, var(--cyan) 55%, transparent);
+  box-shadow: 0 0 12px 1px var(--cyan-glow);
+  opacity: 0;
+  pointer-events: none;
+}
+.gallery-item-card.is-active .gallery-scan {
+  animation: gallery-scan-sweep 1.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+@keyframes gallery-scan-sweep {
+  0% { top: -2px; opacity: 0; }
+  10% { opacity: 0.9; }
+  85% { opacity: 0.5; }
+  100% { top: 100%; opacity: 0; }
+}
+
+.gallery-item-overlay {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px 16px 16px;
+  background: linear-gradient(to top, rgba(var(--bg-void-rgb), 0.95) 15%, rgba(var(--bg-void-rgb), 0.55) 65%, transparent 100%);
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s cubic-bezier(0.16, 0.8, 0.24, 1),
+              transform 0.5s cubic-bezier(0.16, 0.8, 0.24, 1);
+}
+.gallery-item-card.is-active .gallery-item-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+.gallery-item-tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--cyan);
+}
+.gallery-item-overlay h3 {
+  margin-top: 6px;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.3;
+}
+.gallery-item-overlay p {
+  margin-top: 6px;
+  font-size: 11.5px;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+@media (max-width: 460px) {
+  .gallery-item-overlay p {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* ==========================================================================
+   Reduced motion — disable float, parallax, scan sweep, and 3D tilt;
+   keep a simple, near-instant fade so content is never hidden.
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  .gallery-item-reveal {
+    transition: opacity 0.2s linear;
+    transform: none;
+  }
+  .gallery-item-reveal.is-floating {
+    animation: none;
+  }
+  .gallery-item-card {
+    transition: box-shadow 0.2s linear;
+  }
+  .gallery-item-card,
+  .gallery-item-card.is-active {
+    transform: none !important;
+  }
+  .gallery-scan,
+  .gallery-item-card.is-active .gallery-scan {
+    display: none;
+  }
+  .gallery-placeholder-fill svg {
+    transition: none;
+  }
+}
+/* Hide the "28 frames" text */
+.fl-count {
+  display: none !important;
+}
+
+/* Hide the numbers inside the filter buttons */
+#fl-filters button span:last-child {
+  display: none !important;
+}
+/* Space between the filter buttons and the line under them */
+.fl-filters {
+  padding-bottom: 8px !important;
+}
+
+/* Space between that line and the photos below */
+.fl-filters {
+  margin-bottom: 20px !important;
+}
+/* Bigger text on the filter buttons */
+#fl-filters button {
+  font-size: 1.05rem !important;
+}

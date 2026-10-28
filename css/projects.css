@@ -1,0 +1,824 @@
+.featured-project {
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.featured-banner {
+  position: relative;
+  height: 260px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.featured-banner .banner-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--cyan-rgb), 0.09) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--cyan-rgb), 0.09) 1px, transparent 1px);
+  background-size: 34px 34px;
+  animation: pan-grid 18s linear infinite;
+}
+@keyframes pan-grid {
+  to { background-position: 340px 340px; }
+}
+.featured-banner .banner-gradient {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 30%, var(--glow-soft), transparent 55%),
+              linear-gradient(180deg, transparent, rgba(var(--bg-void-rgb), 0.9));
+}
+.featured-banner .banner-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.5;
+}
+.featured-banner .banner-path path {
+  stroke-dasharray: 2 9;
+  animation: dash 7s linear infinite;
+}
+.featured-banner-content {
+  position: relative;
+  z-index: 2;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 28px 34px;
+}
+
+.featured-body {
+  padding: 36px;
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr;
+  gap: 42px;
+}
+@media (max-width: 900px) {
+  .featured-body {
+    grid-template-columns: 1fr;
+    padding: 28px 22px;
+  }
+}
+
+.featured-body h2 {
+  font-size: 1.55rem;
+  color: var(--ink);
+  margin-top: 14px;
+  line-height: 1.35;
+}
+.featured-meta {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: var(--ink-faint);
+}
+.featured-summary {
+  margin-top: 18px;
+  color: var(--ink-muted);
+  line-height: 1.75;
+}
+
+.highlight-list {
+  margin-top: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.highlight-list li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: var(--ink-muted);
+}
+.highlight-list svg {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--cyan);
+}
+
+.featured-tags {
+  margin-top: 24px;
+}
+
+.metric-panel {
+  border: 1px solid rgba(var(--cyan-rgb), 0.2);
+  background: rgba(var(--bg-void-rgb), 0.5);
+  border-radius: var(--radius-md);
+  padding: 26px;
+  text-align: center;
+}
+.metric-panel .metric-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+.metric-panel .metric-value {
+  margin-top: 10px;
+  font-family: var(--font-display);
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--cyan);
+}
+.metric-panel .metric-sub {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--ink-faint);
+}
+
+.index-panel {
+  margin-top: 20px;
+  border: 1px solid var(--border);
+  background: rgba(var(--bg-void-rgb), 0.35);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+.index-panel .index-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+  margin-bottom: 12px;
+}
+.index-panel .tag-row .tag {
+  background: rgba(var(--cyan-rgb), 0.08);
+  color: var(--cyan);
+  border-color: rgba(var(--cyan-rgb), 0.2);
+}
+
+/* Secondary project cards */
+.project-grid {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 26px;
+}
+@media (max-width: 800px) {
+  .project-grid { grid-template-columns: 1fr; }
+}
+
+.project-card {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.project-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
+}
+
+.project-card-media {
+  position: relative;
+  height: 150px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border);
+}
+.project-card-media .media-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(var(--cyan-rgb), 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--cyan-rgb), 0.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+  transition: transform 0.5s var(--ease);
+}
+.project-card:hover .media-grid {
+  transform: scale(1.08);
+}
+.project-card-media .media-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(var(--bg-void-rgb), 0.35);
+  opacity: 0;
+  transition: opacity 0.3s var(--ease);
+}
+.project-card:hover .media-overlay {
+  opacity: 1;
+}
+.media-overlay span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--cyan);
+  border: 1px solid var(--border-strong);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: rgba(var(--bg-void-rgb), 0.6);
+}
+
+.project-card-body {
+  padding: 22px 22px 26px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+.project-card-body h3 {
+  margin-top: 10px;
+  font-size: 1.08rem;
+  color: var(--ink);
+}
+.project-card-body p {
+  margin-top: 10px;
+  color: var(--ink-muted);
+  font-size: 13.5px;
+  line-height: 1.65;
+  flex: 1;
+}
+.project-card-body .tag-row {
+  margin-top: 16px;
+}
+.project-card-body .tag {
+  font-size: 10px;
+  padding: 4px 8px;
+}
+
+.detail-list {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.detail-list li {
+  display: flex;
+  gap: 8px;
+  font-size: 12.5px;
+  color: var(--ink-muted);
+}
+.detail-list li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: rgba(var(--cyan-rgb), 0.6);
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   Image gallery / thumbnail placeholders
+   Swap the placeholder <div> for an <img> when real photos are ready —
+   each spot is marked with an HTML comment in the markup.
+   ========================================================================== */
+
+.thumb-placeholder {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  background:
+    linear-gradient(135deg, rgba(var(--cyan-rgb), 0.05) 0%, transparent 60%),
+    repeating-linear-gradient(45deg, rgba(var(--cyan-rgb), 0.03) 0 2px, transparent 2px 10px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: var(--ink-faint);
+  text-align: center;
+  padding: 20px;
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.thumb-placeholder:hover {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.thumb-placeholder svg {
+  width: 26px;
+  height: 26px;
+  opacity: 0.7;
+}
+.thumb-placeholder span {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.04em;
+  max-width: 220px;
+  line-height: 1.5;
+}
+
+.gallery-grid {
+  margin-top: 22px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+@media (max-width: 760px) {
+  .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 480px) {
+  .gallery-grid { grid-template-columns: 1fr; }
+}
+.gallery-grid .thumb-placeholder {
+  aspect-ratio: 4 / 3;
+}
+
+.project-thumb {
+  margin-bottom: 24px;
+}
+
+/* Structured project subsections: Objective / Problem Statement / Methodology / etc. */
+.project-subhead {
+  margin-top: 26px;
+  font-family: var(--font-mono);
+  font-size: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.project-subhead::before {
+  content: '';
+  width: 12px;
+  height: 1px;
+  background: var(--cyan);
+  opacity: 0.6;
+}
+.project-subhead:first-child {
+  margin-top: 0;
+}
+.project-body-text {
+  margin-top: 10px;
+  color: var(--ink-muted);
+  font-size: 20px;
+  line-height: 1.75;
+}
+
+/* Content-pending note — used where real source material (e.g. an
+   uploaded report) hasn't been supplied yet, so specifics are flagged
+   rather than invented. */
+.content-pending {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 9px 14px;
+  border: 1px dashed rgba(234, 179, 8, 0.4);
+  background: rgba(234, 179, 8, 0.06);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  color: #EAB308;
+  line-height: 1.6;
+}
+.content-pending svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ==========================================================================
+   Additional Projects — compact cards for the smaller CV project list
+   ========================================================================== */
+
+.additional-projects-grid {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .additional-projects-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .additional-projects-grid { grid-template-columns: 1fr; }
+}
+
+.mini-project-card {
+  display: flex;
+  flex-direction: column;
+  padding: 22px;
+  height: 100%;
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.mini-project-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
+}
+.mini-project-card h3 {
+  font-size: 1rem;
+  color: var(--ink);
+  margin-top: 4px;
+}
+.mini-project-card .mini-project-tools {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--ink-faint);
+}
+.mini-project-card ul {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  flex: 1;
+}
+.mini-project-card li {
+  display: flex;
+  gap: 8px;
+  font-size: 12.5px;
+  line-height: 1.55;
+  color: var(--ink-muted);
+}
+.mini-project-card li::before {
+  content: '';
+  width: 4px;
+  height: 4px;
+  margin-top: 6px;
+  border-radius: 50%;
+  background: rgba(var(--cyan-rgb), 0.6);
+  flex-shrink: 0;
+}
+.mini-project-card .mini-thumb {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-bottom: 14px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: repeating-linear-gradient(45deg, rgba(var(--cyan-rgb), 0.03) 0 2px, transparent 2px 10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-faint);
+  transition: border-color 0.3s var(--ease), color 0.3s var(--ease);
+}
+.mini-project-card:hover .mini-thumb {
+  border-color: var(--cyan);
+  color: var(--cyan);
+}
+.mini-project-card .mini-thumb svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+}
+
+/* ==========================================================================
+   Research-style project cards (Featured Projects) — compact card that
+   opens full detail in a modal via "Read More".
+   ========================================================================== */
+
+.research-cards-grid {
+  margin-top: 44px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+@media (max-width: 980px) {
+  .research-cards-grid { grid-template-columns: 1fr; }
+}
+
+.research-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  transition: border-color 0.3s var(--ease), transform 0.3s var(--ease);
+}
+.research-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-4px);
+}
+.research-card--main {
+  border-color: rgba(var(--cyan-rgb), 0.22);
+}
+
+.research-card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  border-bottom: 1px solid var(--border);
+}
+
+.research-card-body {
+  padding: 22px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.research-card-body .eyebrow-pill {
+  align-self: flex-start;
+}
+
+.research-card-body h3 {
+  margin-top: 12px;
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: var(--ink);
+  line-height: 1.35;
+}
+
+.research-card-body .research-card-desc {
+  margin-top: 10px;
+  color: var(--ink-muted);
+  font-size: 13.5px;
+  line-height: 1.65;
+  flex: 1;
+}
+
+.research-card-body .tag-row {
+  margin-top: 16px;
+}
+.research-card-body .tag-row .tag {
+  font-size: 10px;
+  padding: 4px 8px;
+}
+
+.read-more-btn {
+  margin-top: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  align-self: flex-start;
+  padding: 10px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--cyan);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.25s var(--ease), transform 0.2s var(--ease);
+}
+.read-more-btn:hover,
+.read-more-btn:focus-visible {
+  background: rgba(var(--cyan-rgb), 0.1);
+  transform: translateY(-2px);
+}
+.read-more-btn svg {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s var(--ease);
+}
+.read-more-btn:hover svg {
+  transform: translateX(3px);
+}
+
+/* ==========================================================================
+   Project modal — full-screen reading view (see js/main.js: initProjectModal)
+   "Read More" opens the project across the whole screen, on the same page.
+   ========================================================================== */
+
+.project-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--bg-void);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+  overflow: hidden;
+}
+.project-modal-overlay.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.project-modal,
+.project-modal.glass-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background: var(--bg-void);
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  transform: scale(0.985);
+  transition: transform 0.35s var(--ease);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+.project-modal::before,
+.project-modal::after {
+  display: none !important;
+}
+.project-modal-overlay.is-open .project-modal {
+  transform: scale(1);
+}
+
+/* Sticky top bar: back + close stay visible while reading */
+.project-modal-bar {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: rgba(var(--bg-void-rgb), 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.project-modal-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  color: var(--ink-muted);
+  transition: color 0.2s var(--ease);
+}
+.project-modal-back:hover,
+.project-modal-back:focus-visible {
+  color: var(--cyan);
+}
+.project-modal-back svg {
+  width: 16px;
+  height: 16px;
+}
+
+.project-modal-close {
+  position: static;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: transparent;
+  color: var(--ink-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.project-modal-close:hover,
+.project-modal-close:focus-visible {
+  color: var(--cyan);
+  border-color: var(--cyan);
+  transform: rotate(90deg);
+}
+.project-modal-close svg {
+  width: 16px;
+  height: 16px;
+}
+
+.project-modal-body {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 48px 32px 110px;
+}
+.project-modal-body .eyebrow-pill {
+  margin-bottom: 4px;
+}
+.project-modal-body h2 {
+  margin-top: 14px;
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.25;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .project-modal-bar { padding: 12px 18px; }
+  .project-modal-body { padding: 32px 20px 80px; }
+  .project-modal-body h2 { font-size: 1.6rem; }
+}
+
+/* ==========================================================================
+   Report block (inside each project's full-screen view)
+   ========================================================================== */
+.report-box {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 24px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  background: rgba(var(--cyan-rgb), 0.05);
+}
+.report-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.report-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  flex: none;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  color: var(--green);
+}
+.report-icon svg {
+  width: 24px;
+  height: 24px;
+}
+.report-info strong {
+  display: block;
+  color: var(--ink);
+  font-weight: 700;
+}
+.report-info span.report-note {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--ink-muted);
+}
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.project-subhead::before,
+.project-subhead::after {
+  content: none !important;
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: none !important;
+}
+/* Line under the title: Final Year Project · B.E. Aerospace ... */
+.project-modal-body .featured-meta {
+  font-size: 17px !important;
+  line-height: 1.6;
+}
+
+/* "Classification accuracy" label */
+.project-modal-body .metric-panel .metric-label {
+  font-size: 16px !important;
+}
+
+/* "nutrient-deficient maize detection" */
+.project-modal-body .metric-panel .metric-sub {
+  font-size: 16px !important;
+}
+/* Tool chips in the Read More pop-up */
+.project-modal-body .tag-row .tag,
+.project-modal-body .featured-tags .tag {
+  font-size: 16px !important;
+  padding: 8px 14px !important;
+  line-height: 1.4;
+}
+/* Results bullet points in the Read More pop-up */
+.project-modal-body .highlight-list li {
+  font-size: 19px !important;
+  line-height: 1.65;
+  gap: 12px;
+}
+
+.project-modal-body .highlight-list li strong {
+  color: var(--ink);
+}
+
+.project-modal-body .highlight-list svg {
+  width: 22px !important;
+  height: 22px !important;
+  margin-top: 3px;
+}
+/* Paragraph alignment in the Read More pop-up
+   (Objective, Problem Statement, Methodology, Field Experiments, Machine Learning Workflow) */
+.project-modal-body .project-body-text {
+  text-align: justify;
+  text-justify: inter-word;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+/* Navigation links: size and font */
+.main-nav-list a,
+.mobile-nav a {
+  font-family: var(--font-display) !important;
+  font-size: 16px !important;   /* increase a little more if you like, e.g. 17px */
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+/* Remove the camera icon under photos (only where a real photo exists) */
+.gallery-grid .thumb-placeholder:has(img) > svg {
+  display: none !important;
+}
+/* Remove camera icon where a real photo exists */
+.project-modal-body .gallery-grid .thumb-placeholder:has(.thumb-image) > svg {
+  display: none !important;
+}
+

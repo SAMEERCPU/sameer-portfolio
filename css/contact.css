@@ -1,0 +1,270 @@
+.contact-grid {
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 50px;
+}
+@media (max-width: 900px) {
+  .contact-grid { grid-template-columns: 1fr; gap: 40px; }
+}
+
+.contact-info-card {
+  padding: 30px;
+}
+.contact-info-card h3 {
+  font-size: 1.1rem;
+  color: var(--ink);
+}
+.contact-info-card > p {
+  margin-top: 10px;
+  color: var(--ink-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.contact-detail {
+  margin-top: 26px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.contact-detail:first-of-type {
+  margin-top: 28px;
+}
+.contact-detail svg {
+  width: 18px;
+  height: 18px;
+  color: var(--cyan);
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.contact-detail .detail-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+.contact-detail .detail-value {
+  margin-top: 3px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.contact-detail a.detail-value:hover {
+  color: var(--cyan);
+}
+
+.social-row {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+}
+.social-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.social-btn:hover {
+  color: var(--cyan);
+  border-color: var(--border-strong);
+  transform: translateY(-3px);
+}
+.social-btn svg { width: 17px; height: 17px; }
+
+/* Map / coordinate strip */
+.coord-strip {
+  margin-top: 28px;
+  padding: 16px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Contact form */
+.contact-form {
+  padding: 32px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+@media (max-width: 560px) {
+  .form-row { grid-template-columns: 1fr; }
+}
+
+.field {
+  margin-bottom: 22px;
+}
+.field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--ink-faint);
+  margin-bottom: 9px;
+}
+.field input,
+.field textarea {
+  width: 100%;
+  background: rgba(var(--bg-void-rgb), 0.55);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  color: var(--ink);
+  font-size: 14px;
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+}
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--ink-faint);
+}
+.field input:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 0 3px rgba(var(--cyan-rgb), 0.12);
+}
+.field textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.field-error {
+  display: none;
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #F87171;
+}
+.field.has-error input,
+.field.has-error textarea {
+  border-color: #F87171;
+}
+.field.has-error .field-error {
+  display: block;
+}
+
+.form-submit {
+  width: 100%;
+  justify-content: center;
+  margin-top: 4px;
+  border: none;
+}
+
+.form-status {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--green);
+  display: none;
+}
+.form-status.is-visible {
+  display: block;
+}
+
+/* ==========================================================================
+   Click-to-copy button beside the email address
+   ========================================================================== */
+.detail-value-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.copy-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  color: var(--ink-faint);
+  background: rgba(var(--bg-surface-rgb), 0.5);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 3px 9px 3px 7px;
+  cursor: pointer;
+  transition: color 0.25s var(--ease), border-color 0.25s var(--ease), background-color 0.25s var(--ease);
+}
+.copy-btn:hover {
+  color: var(--ink);
+  border-color: var(--border-strong);
+}
+.copy-btn:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+.copy-btn svg {
+  width: 12px;
+  height: 12px;
+  margin: 0;
+  color: currentColor;
+  flex-shrink: 0;
+}
+.copy-btn .icon-check {
+  display: none;
+}
+.copy-btn.is-copied {
+  color: var(--green);
+  border-color: rgba(var(--green-rgb), 0.35);
+}
+.copy-btn.is-copied .icon-copy {
+  display: none;
+}
+.copy-btn.is-copied .icon-check {
+  display: block;
+}
+/* ===== BIGGER TEXT: change only the number before px / rem ===== */
+
+/* "Get in touch" (heading) */
+.contact-info-card h3 { font-size: 1.5rem; }
+
+/* "Email is the best way to reach me..." (paragraph) */
+.contact-info-card > p { font-size: 16.5px; }
+
+/* "Email", "Phone", "Location" (small labels on the left card) */
+.contact-detail .detail-label { font-size: 12.5px; }
+
+/* sameerbaskota821@gmail.com, +977-9864758824, Lalitpur, Nepal */
+.contact-detail .detail-value { font-size: 17px; }
+
+/* Icon size only: envelope, phone, pin (not text) */
+.contact-detail svg { width: 20px; height: 20px; }
+
+/* The word "Copy" */
+.copy-btn { font-size: 12.5px; padding: 4px 12px 4px 10px; }
+
+/* Small icon inside the Copy button */
+.copy-btn svg { width: 14px; height: 14px; }
+
+/* "GH", "in", "X" (round buttons). 46px is the circle size */
+.social-btn { width: 46px; height: 46px; font-family: var(--font-mono); font-size: 13.5px !important; }
+
+/* "Name", "Email", "Subject", "Message" (labels above the boxes) */
+.field label { font-size: 13px; }
+
+/* Text you type in the boxes, plus the grey hint text inside them */
+.field input, .field textarea { font-size: 16.5px; }
+
+/* Red error messages when the form is filled wrong */
+.field-error { font-size: 13px; }
+
+/* "Send Message" (button text) */
+.btn.form-submit { font-size: 16.5px; }
+
+/* Success message shown after the form is sent */
+.form-status { font-size: 14px; }

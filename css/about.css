@@ -1,0 +1,203 @@
+.about-grid {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 44px;
+  margin-top: 24px;
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+/* ==========================================================================
+   Social buttons — LinkedIn / GitHub
+   ========================================================================== */
+
+.social-link-row {
+  margin-top: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.social-link-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 11px 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--ink);
+  transition: border-color 0.25s var(--ease), color 0.25s var(--ease), transform 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+.social-link-btn svg {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.25s var(--ease);
+}
+.social-link-btn:hover,
+.social-link-btn:focus-visible {
+  color: var(--cyan);
+  border-color: var(--border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px -12px var(--glow-strong);
+}
+.social-link-btn:hover svg,
+.social-link-btn:focus-visible svg {
+  transform: translateY(-1px);
+}
+
+.about-copy p {
+  color: var(--ink-muted);
+  font-size: 1.25rem;
+  text-align: justify;
+  line-height: 1.79;
+  margin-bottom: 20px;
+}
+.about-copy strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.info-card {
+  padding: 26px;
+  position: sticky;
+  top: calc(var(--header-h) + 24px);
+}
+@media (max-width: 900px) {
+  .info-card {
+    position: static;
+  }
+}
+
+.info-row {
+  display: flex;
+  gap: 14px;
+}
+.info-row + .info-row {
+  margin-top: 22px;
+}
+.info-icon {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: rgba(var(--bg-void-rgb), 0.4);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.info-icon svg {
+  width: 16px;
+  height: 16px;
+  color: var(--cyan);
+}
+.info-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-faint);
+}
+.info-value {
+  margin-top: 4px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.info-value .faint {
+  color: var(--ink-faint);
+}
+
+.mission-strip {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .mission-strip { grid-template-columns: repeat(2, 1fr); }
+}
+.mission-item {
+  padding: 22px;
+  text-align: center;
+}
+.mission-item .num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--cyan);
+}
+.mission-item .label {
+  margin-top: 10px;
+  font-size: 13.5px;
+  color: var(--ink-muted);
+}
+
+/* ==========================================================================
+   Training & Certifications / Extracurricular Activities — filled-dot bullets
+   ========================================================================== */
+
+.credentials-grid {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+@media (max-width: 800px) {
+  .credentials-grid { grid-template-columns: 1fr; }
+}
+
+.credentials-card {
+  padding: 26px 28px;
+}
+.credentials-card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.credentials-card-head .skill-icon {
+  width: 36px;
+  height: 36px;
+}
+.credentials-card-head .skill-icon svg {
+  width: 17px;
+  height: 17px;
+}
+.credentials-card-head h3 {
+  font-size: 1.02rem;
+  color: var(--ink);
+}
+
+.dot-list {
+  margin-top: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.dot-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink-muted);
+}
+.dot-list li::before {
+  content: '\2022';
+  color: var(--cyan);
+  font-size: 1.35em;
+  line-height: 1;
+  position: relative;
+  top: -0.02em;
+  flex-shrink: 0;
+}
+.dot-list li strong {
+  color: var(--ink);
+  font-weight: 600;
+}

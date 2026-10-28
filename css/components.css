@@ -1,0 +1,364 @@
+/* ==========================================================================
+   TAGS / PILLS
+   ========================================================================== */
+
+.tag {
+  display: inline-block;
+  border: 1px solid var(--border);
+  background: rgba(var(--bg-void-rgb), 0.4);
+  color: var(--ink-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease);
+}
+.tag:hover {
+  color: var(--cyan);
+  border-color: var(--border-strong);
+}
+
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.eyebrow-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+.eyebrow-pill--featured {
+  border: 1px solid rgba(var(--green-rgb), 0.3);
+  background: rgba(var(--green-rgb), 0.1);
+  color: var(--green);
+}
+
+/* ==========================================================================
+   STATUS CHIP — small corner badge on project thumbnails signalling where
+   a piece of work stands (completed build, ongoing, or a design study that
+   was never physically built). Deliberately not "Live/Deployed" language —
+   these are engineering/research projects, not hosted web apps.
+   ========================================================================== */
+.status-chip {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: rgba(var(--bg-void-rgb), 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  color: var(--ink-muted);
+}
+.status-chip::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+.status-chip--done {
+  color: var(--green);
+  border-color: rgba(var(--green-rgb), 0.3);
+}
+.status-chip--concept {
+  color: var(--cyan);
+  border-color: var(--border-strong);
+}
+.status-chip--ongoing {
+  color: #F59E0B;
+  border-color: rgba(245, 158, 11, 0.32);
+}
+.status-chip--ongoing::before {
+  animation: status-chip-pulse 1.6s ease-in-out infinite;
+}
+@keyframes status-chip-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .status-chip--ongoing::before { animation: none; }
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.site-footer {
+  border-top: 1px solid var(--border);
+  padding: 36px 0 24px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 40px;
+}
+@media (max-width: 760px) {
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+
+.footer-brand .footer-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+.footer-brand .footer-title {
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--cyan);
+}
+.footer-brand .footer-tagline {
+  margin-top: 12px;
+  max-width: 320px;
+  color: var(--ink-muted);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.footer-col-heading {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  margin-bottom: 16px;
+}
+
+.footer-list {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+.footer-list a,
+.footer-list span {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--ink-muted);
+  font-size: 13.5px;
+  transition: color 0.2s var(--ease);
+}
+.footer-list a:hover,
+.footer-list a:focus-visible {
+  color: var(--cyan);
+}
+.footer-list svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  color: var(--cyan);
+}
+
+.footer-bottom {
+  margin-top: 44px;
+  padding-top: 22px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--ink-faint);
+}
+
+/* ==========================================================================
+   BACK-TO-TOP
+   ========================================================================== */
+
+#back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+  background: rgba(var(--bg-surface-rgb), 0.85);
+  backdrop-filter: blur(10px);
+  color: var(--cyan);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.25s var(--ease), transform 0.25s var(--ease), visibility 0.25s;
+  z-index: 60;
+}
+#back-to-top.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+#back-to-top svg { width: 18px; height: 18px; }
+
+/* ==========================================================================
+   GENERIC HUD DECORATIONS (topo lines / gradient rule)
+   ========================================================================== */
+
+.gradient-rule {
+  height: 1px;
+  width: 100%;
+  background: linear-gradient(90deg, transparent, rgba(var(--cyan-rgb), 0.35), transparent);
+  background-size: 200% 100%;
+  animation: shift 5s linear infinite;
+}
+@keyframes shift {
+  to { background-position: -200% 0; }
+}
+
+.topo-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   Section watermarks — large, low-opacity decorative marks tying each
+   section to a UAV/AI/research theme. Purely decorative: behind content,
+   no pointer events, hidden on small screens to avoid ever crowding text.
+   ========================================================================== */
+.section-watermark {
+  position: absolute;
+  bottom: -8%;
+  right: -3%;
+  width: 340px;
+  height: 340px;
+  pointer-events: none;
+  z-index: 0;
+  color: var(--cyan);
+  opacity: 0.045;
+}
+.section-watermark svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+@media (max-width: 720px) {
+  .section-watermark {
+    display: none;
+  }
+}
+
+/* ==========================================================================
+   SITE DRONE — the site's signature interactive moment. A small top-down
+   quadcopter escorts the cursor across the whole page (every page except
+   Contact — see the guard in initSiteDrone): an eased "flight" follow, a
+   continuous idle hover-bob, rotors that spin the whole time, and basic
+   flight-dynamics tilt — roll (bank) toward whichever way it's moving
+   left/right, pitch (nose up/down) toward whichever way it's moving
+   forward/back. Click anywhere and it fires a quick camera-shutter flash,
+   like it just took a photo. Layers (position / bank+pitch / bob) each
+   carry their own transform so JS-driven and CSS-animated transforms
+   never fight on the same element. Purely decorative throughout:
+   pointer-events are off, so it never intercepts a click on anything
+   beneath it, however high its z-index sits.
+   ========================================================================== */
+.site-drone {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  margin: -13px 0 0 -13px;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 300;
+  transition: opacity 0.4s var(--ease);
+  will-change: transform;
+}
+.site-drone.is-active {
+  opacity: 0.9;
+}
+
+.site-drone-bank {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.site-drone-bob {
+  width: 100%;
+  height: 100%;
+  animation: site-drone-bob 2.6s ease-in-out infinite;
+}
+@keyframes site-drone-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px); }
+}
+
+.site-drone-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  color: var(--cyan);
+  filter: drop-shadow(0 4px 7px rgba(0, 0, 0, 0.35));
+}
+.site-drone-rotor {
+  animation: site-drone-spin 0.45s linear infinite;
+}
+@keyframes site-drone-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Camera-shutter flash on click */
+.site-drone-shutter {
+  position: absolute;
+  inset: -7px;
+  border-radius: 50%;
+  border: 1.5px solid var(--cyan);
+  opacity: 0;
+  transform: scale(0.5);
+  pointer-events: none;
+}
+.site-drone.is-shooting .site-drone-shutter {
+  animation: site-drone-shutter-pulse 0.55s var(--ease);
+}
+@keyframes site-drone-shutter-pulse {
+  0%   { opacity: 0.9; transform: scale(0.5); }
+  70%  { opacity: 0.25; transform: scale(1.5); }
+  100% { opacity: 0; transform: scale(1.9); }
+}
+.site-drone.is-shooting .site-drone-svg {
+  color: var(--green);
+}
+
+@media (max-width: 900px), (hover: none), (pointer: coarse) {
+  .site-drone { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .site-drone,
+  .site-drone-bank,
+  .site-drone-bob,
+  .site-drone-rotor {
+    transition: none;
+    animation: none;
+  }
+}
