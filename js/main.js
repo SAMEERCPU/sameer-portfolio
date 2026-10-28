@@ -321,7 +321,7 @@
       // No backend is wired up in this static build — this simply confirms
       // the form is ready to be connected to an email service or endpoint.
       if (status) {
-        status.textContent = 'Message ready to send — connect this form to your email service or backend endpoint.';
+        status.textContent = 'Message ready to send';
         status.classList.add('is-visible');
       }
       form.reset();
